@@ -98,6 +98,7 @@ public class VacationViews extends AndroidViewModel {
         vacation.hotel = vacationHotel.getValue();
         vacation.startDate = String.valueOf(vacationStartDate.getValue());
         vacation.endDate = String.valueOf(vacationEndDate.getValue());
-
+        repository.deleteVacation(vacation);
+        currentVacationId = 0;
     }
 }
