@@ -2,7 +2,7 @@ package wgu.bright.d308.entities;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
+//b2
 @Entity(tableName = "vacations")
 public class Vacation {
     @PrimaryKey(autoGenerate = true)
