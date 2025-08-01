@@ -10,7 +10,6 @@ public class Vacation {
     public String title;
     public String hotel;
 
-
     public String startDate;
     public String endDate;
 
