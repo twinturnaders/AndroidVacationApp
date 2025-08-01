@@ -16,9 +16,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a4ea2d54-0d6b-4837-a513-ecfe999a8b0b" name="Changes" comment="b2">
+    <list default="true" id="a4ea2d54-0d6b-4837-a513-ecfe999a8b0b" name="Changes" comment="B3: a-d&#10;Vacation Details display/edit&#10;Date validator&#10;Date picker display">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/alerts/AlertReceiver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/Views/VacationViews.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/Views/VacationViews.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/VacationActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/VacationActivity.java" afterDir="false" />
     </list>
@@ -229,7 +230,23 @@
       <option name="project" value="LOCAL" />
       <updated>1754062956701</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="B3: a-c&#10;Vacation Details display/edit&#10;Date validator&#10;Date picker display">
+      <option name="closed" value="true" />
+      <created>1754064193344</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1754064193344</updated>
+    </task>
+    <task id="LOCAL-00006" summary="B3: a-d&#10;Vacation Details display/edit&#10;Date validator&#10;Date picker display">
+      <option name="closed" value="true" />
+      <created>1754064253086</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1754064253086</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -237,7 +254,9 @@
     <MESSAGE value="Part B1 Finished with the following files to accomplish:&#10;Vacation (entity)&#10;VacationViews (viewmodel)&#10;VacationRepository &#10;Vacation Activity&#10;activity_main layout&#10;AppData- database sqllit/room&#10;ExcursionDao&#10;VacationDao&#10;ExcursionViews(just built, not necessary yet)&#10;validation for excursion/vacation attachment created" />
     <MESSAGE value="b2" />
     <MESSAGE value="it woud help to actually delete the vacation" />
-    <option name="LAST_COMMIT_MESSAGE" value="it woud help to actually delete the vacation" />
+    <MESSAGE value="B3: a-c&#10;Vacation Details display/edit&#10;Date validator&#10;Date picker display" />
+    <MESSAGE value="B3: a-d&#10;Vacation Details display/edit&#10;Date validator&#10;Date picker display" />
+    <option name="LAST_COMMIT_MESSAGE" value="B3: a-d&#10;Vacation Details display/edit&#10;Date validator&#10;Date picker display" />
   </component>
   <component name="play_dynamic_filters_status">
     <option name="appIdToCheckInfo">

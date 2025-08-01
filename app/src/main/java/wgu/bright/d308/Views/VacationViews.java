@@ -1,20 +1,31 @@
 package wgu.bright.d308.Views;
+import static androidx.core.content.ContextCompat.getSystemService;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.function.Consumer;
+
+import android.Manifest;
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
 import wgu.bright.d308.VacationRepository;
+import wgu.bright.d308.alerts.AlertReceiver;
 import wgu.bright.d308.entities.Vacation;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.RequiresPermission;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class VacationViews extends AndroidViewModel {
 
     private final VacationRepository repository;
@@ -62,7 +73,7 @@ public class VacationViews extends AndroidViewModel {
     public MutableLiveData<String> getVacationTitle() { return vacationTitle; }
     public MutableLiveData<String> getVacationHotel() { return vacationHotel; }
 
-
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void saveVacation() {
         Vacation vacation = new Vacation();
         vacation.title = vacationTitle.getValue();
@@ -71,16 +82,13 @@ public class VacationViews extends AndroidViewModel {
         LocalDate end = vacationEndDate.getValue();
 
         if (start == null || end == null) return;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (!end.isAfter(start)) {
-                Log.e("Validation", "End date must be after start date");
-                    return;
-                }
-            }
+        if (!end.isAfter(start)) {
+            Log.e("Validation", "End date must be after start date");
+            return;
+        }
 
 
-
-            if (currentVacationId == 0) {
+        if (currentVacationId == 0) {
             repository.insertVacation(vacation, newId -> {
                 currentVacationId = Math.toIntExact(newId);
                 Log.d("InsertedVacation", "Vacation saved with ID: " + newId);
@@ -111,4 +119,6 @@ public class VacationViews extends AndroidViewModel {
         repository.deleteVacation(vacation);
         currentVacationId = 0;
     }
+
+
 }
