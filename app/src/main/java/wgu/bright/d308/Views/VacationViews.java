@@ -67,10 +67,20 @@ public class VacationViews extends AndroidViewModel {
         Vacation vacation = new Vacation();
         vacation.title = vacationTitle.getValue();
         vacation.hotel = vacationHotel.getValue();
+        LocalDate start = vacationStartDate.getValue();
+        LocalDate end = vacationEndDate.getValue();
+
+        if (start == null || end == null) return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (!end.isAfter(start)) {
+                Log.e("Validation", "End date must be after start date");
+                    return;
+                }
+            }
 
 
 
-        if (currentVacationId == 0) {
+            if (currentVacationId == 0) {
             repository.insertVacation(vacation, newId -> {
                 currentVacationId = Math.toIntExact(newId);
                 Log.d("InsertedVacation", "Vacation saved with ID: " + newId);
