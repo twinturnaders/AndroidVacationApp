@@ -89,6 +89,56 @@ public class VacationActivity extends AppCompatActivity {
                 scheduleAlert(title, "ending", end, 200 + vacationViews.getCurrentVacationId());
             }
         });
+        binding.buttonShareVacation.setOnClickListener(v -> {
+            String title;
+            String hotel;
+            String start;
+            String end;
+
+            if(vacationViews.getVacationTitle()!= null){
+                title = String.valueOf(vacationViews.getVacationTitle());
+            }
+            else{
+                title = "No name for vacation listed";
+
+            }
+            if(vacationViews.getVacationHotel()!= null){
+                hotel = String.valueOf(vacationViews.getVacationHotel());
+            }
+            else{
+                hotel = "No hotel listed";
+
+            }
+            if(vacationViews.getVacationStartDate()!= null){
+                start = String.valueOf(vacationViews.getVacationStartDate());
+            }
+            else{
+                start = "No start date listed";
+
+            }
+            if(vacationViews.getVacationEndDate()!= null){
+                end = String.valueOf(vacationViews.getVacationEndDate());
+            }
+            else{
+                end = "No end date listed";
+
+            }
+
+
+            String message = "Vacation Time!!\n\n"
+                    + "Title: " + title + "\n"
+                    + "Hotel: " + hotel + "\n"
+                    + "Start Date: " + start + "\n"
+                    + "End Date: " + end;
+
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, message);
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Vacation: " + title);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, message);
+
+            startActivity(Intent.createChooser(shareIntent, "Share vacation via..."));
+        });
         binding.buttonViewVacationDetails.setOnClickListener(v -> {
             int id = vacationViews.getCurrentVacationId();
             if (id != 0) {

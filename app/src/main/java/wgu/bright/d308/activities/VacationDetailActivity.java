@@ -50,15 +50,23 @@ public class VacationDetailActivity extends AppCompatActivity {
         });
 
         binding.buttonShareVacation.setOnClickListener(v -> {
-            String message = "Vacation: " + vacation.title + "\n"
-                    + "Hotel: " + vacation.hotel + "\n"
-                    + "Start: " + vacation.startDate + "\n"
-                    + "End: " + vacation.endDate;
+            String title = vacation.title != null ? vacation.title : "Untitled Vacation";
+            String hotel = vacation.hotel != null ? vacation.hotel : "No Hotel Listed";
+            String start = vacation.startDate != null ? vacation.startDate : "N/A";
+            String end = vacation.endDate != null ? vacation.endDate : "N/A";
+
+            String message = "Vacation Time!!\n\n"
+                    + "Title: " + title + "\n"
+                    + "Hotel: " + hotel + "\n"
+                    + "Start Date: " + start + "\n"
+                    + "End Date: " + end;
 
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT, message);
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Trip Details: " + vacation.title);
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Vacation: " + title);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, message);
+
             startActivity(Intent.createChooser(shareIntent, "Share vacation via..."));
         });
 
