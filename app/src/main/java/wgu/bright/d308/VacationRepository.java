@@ -47,6 +47,10 @@ public class VacationRepository {
         executor.execute(() -> vacationDao.delete(vacation));
     }
 
+    public void findVacation(Vacation vacation) {
+        executor.execute(() -> vacationDao.getVacationByTitle(vacation.title));
+    }
+
     //check repo for excursions outside of main thread
     public void canDelete(Vacation vacation, Consumer<Boolean> callback) {
         executor.execute(() -> {

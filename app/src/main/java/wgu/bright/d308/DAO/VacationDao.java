@@ -24,6 +24,9 @@ public interface VacationDao {
     @Query("SELECT * FROM vacations WHERE id = :id")
     Vacation getVacationById(int id);
 
+    @Query("SELECT * FROM vacations WHERE title = :title")
+    Vacation getVacationByTitle(String title);
+
     @Query("SELECT * FROM vacations")
     List<Vacation> getAllVacations();
 

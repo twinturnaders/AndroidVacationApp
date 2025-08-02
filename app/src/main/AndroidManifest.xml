@@ -14,17 +14,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.D308">
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+        <activity android:name=".activities.VacationActivity"
+            android:exported="true"
+            tools:targetApi="26">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".alerts.AlertReceiver"
-            />
+
+        <activity android:name=".activities.VacationDetailActivity"
+            tools:targetApi="26" />
+        <activity android:name=".activities.ExcursionActivity" />
+
+
+
+        <receiver android:name=".alerts.AlertReceiver" />
     </application>
 
 </manifest>

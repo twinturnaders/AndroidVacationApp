@@ -64,6 +64,8 @@ public class VacationActivity extends AppCompatActivity {
         });
 
         // Show date pickers on click
+        binding.editTextEndDate.setOnClickListener(v ->
+                showDatePicker(vacationViews.getVacationStartDate(), binding.editTextEndDate));
 
         binding.editTextEndDate.setOnClickListener(v ->
                 showDatePicker(vacationViews.getVacationEndDate(), binding.editTextEndDate));
@@ -217,4 +219,6 @@ public class VacationActivity extends AppCompatActivity {
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
         }
+        //add back button
+
     }

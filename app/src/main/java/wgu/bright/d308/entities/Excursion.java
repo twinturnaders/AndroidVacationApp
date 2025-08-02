@@ -35,5 +35,8 @@ public class Excursion {
     }
 
 
+    public Excursion() {
+
+    }
 }
 
