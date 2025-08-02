@@ -89,7 +89,16 @@ public class VacationActivity extends AppCompatActivity {
                 scheduleAlert(title, "ending", end, 200 + vacationViews.getCurrentVacationId());
             }
         });
-
+        binding.buttonViewVacationDetails.setOnClickListener(v -> {
+            int id = vacationViews.getCurrentVacationId();
+            if (id != 0) {
+                Intent intent = new Intent(this, VacationDetailActivity.class);
+                intent.putExtra("vacationId", id);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Please save a vacation first.", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //Delete button click/ check logic
         binding.buttonDeleteVacation.setOnClickListener(v -> {

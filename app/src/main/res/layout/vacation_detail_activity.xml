@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll_view_vacation"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vacation Details"
+            android:textSize="24dp"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"/>
+
+        <!-- View vacation title -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vacation Title"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:textColor="@color/material_dynamic_secondary50"
+            android:textStyle="bold"
+            android:layout_marginTop="18dp"/>
+        <TextView
+            android:id="@+id/textViewVacationTitle"
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:textSize="14sp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/material_dynamic_neutral40"
+            android:text=""
+            />
+
+
+        <!-- Hotel -->
+       <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hotel Name"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:textColor="@color/material_dynamic_secondary50"
+            android:textStyle="bold"
+            android:layout_marginTop="18dp"/>
+        <TextView
+            android:id="@+id/textViewHotel"
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:textSize="14sp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/material_dynamic_neutral40"
+            android:text=""
+            />
+
+
+        <!-- Excursions -->
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Excursions"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:textColor="@color/material_dynamic_secondary50"
+            android:textStyle="bold"
+            android:layout_marginTop="18dp"/>
+
+
+        <!-- Start Date -->
+
+
+
+
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start Date"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:textColor="@color/material_dynamic_secondary50"
+            android:textStyle="bold"
+            android:layout_marginTop="18dp"/>
+        <TextView
+            android:id="@+id/textViewStartDate"
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:textSize="14sp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/material_dynamic_neutral40"
+            android:text=""
+            />
+
+
+
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="End Date"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:textColor="@color/material_dynamic_secondary50"
+            android:textStyle="bold"
+            android:layout_marginTop="18dp"/>
+        <TextView
+            android:id="@+id/textViewEndDate"
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:textSize="14sp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/material_dynamic_neutral40"
+            android:text=""
+            />
+
+
+        <Button
+            android:id="@+id/buttonSaveVacation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Save Vacation" />
+
+        <Button
+            android:id="@+id/buttonEditVacation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Edit Vacation" />
+        <Button
+            android:id="@+id/buttonShareVacation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Share Vacation" />
+
+
+        <Button
+            android:id="@+id/buttonDeleteVacation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Delete Vacation"
+            android:textColor="@android:color/holo_red_dark"
+             />
+    </LinearLayout>
+</ScrollView>
