@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -37,7 +38,7 @@ public class ExcursionViews extends AndroidViewModel {
         return excursionTitle;
     }
 
-    public MutableLiveData<String> getExcursionDate() {
+    public MutableLiveData<LocalDate> getExcursionDate() {
         return excursionDate;
     }
 
@@ -73,5 +74,9 @@ public class ExcursionViews extends AndroidViewModel {
         excursion.date = Objects.requireNonNull(excursionDate.getValue());
         excursion.vacationId = vacationId;
         repository.getExcursionDao().delete(excursion);
+    }
+
+    public long getExcursionId() {
+        return currentExcursionId;
     }
 }

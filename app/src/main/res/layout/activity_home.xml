@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/homeScroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vacation Manager"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Search by ID -->
+        <EditText
+            android:id="@+id/editTextSearchId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search by Vacation ID"
+            android:inputType="number" />
+
+        <!-- Search by Title -->
+        <EditText
+            android:id="@+id/editTextSearchTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search by Title"
+            android:inputType="textCapWords"
+            android:layout_marginTop="12dp" />
+
+        <!-- Search Button -->
+        <Button
+            android:id="@+id/buttonSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:layout_marginTop="16dp" />
+
+        <!-- Create New -->
+        <Button
+            android:id="@+id/buttonCreateVacation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create New Vacation"
+            android:layout_marginTop="32dp" />
+    </LinearLayout>
+</ScrollView>

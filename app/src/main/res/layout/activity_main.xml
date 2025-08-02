@@ -24,7 +24,7 @@
             android:id="@+id/editTextVacationTitle"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:hint="e.g., Summer in Hawaii"
+            android:hint="ex: Scranton, PA"
             android:inputType="textCapWords" />
 
         <!-- Hotel -->
@@ -39,7 +39,7 @@
             android:id="@+id/editTextHotel"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:hint="e.g., Hilton Waikiki"
+            android:hint="ex: Dwight Schrutes Bed and Breakfast"
             android:inputType="textCapWords" />
 
         <!-- Start Date -->
@@ -75,7 +75,36 @@
             android:focusable="false"
             android:hint="MM/dd/yyyy"
             android:inputType="date" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Excursions"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"
+            />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewExcursions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:nestedScrollingEnabled="false"/>
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal">
+        <Button
+           android:id="@+id/buttonAddExcursion"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
 
+           android:text="Add Excursion" />
+           <Button
+               android:id="@+id/buttonEditExcursions"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+               android:text="Edit Excursions" />
+       </LinearLayout>
 
         <Button
             android:id="@+id/buttonSaveVacation"
@@ -97,7 +126,13 @@
             android:text="View Details"
             android:textColor="@android:color/black" />
 
-
+        <Button
+            android:id="@+id/buttonHome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Return Home"
+            />
 
         <Button
             android:id="@+id/buttonDeleteVacation"
@@ -106,6 +141,6 @@
             android:layout_marginTop="12dp"
             android:text="Delete Vacation"
             android:textColor="@android:color/holo_red_dark"
-            android:visibility="gone" />
+            />
     </LinearLayout>
 </ScrollView>

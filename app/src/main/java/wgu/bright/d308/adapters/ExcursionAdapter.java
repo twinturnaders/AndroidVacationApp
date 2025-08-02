@@ -14,12 +14,24 @@ import wgu.bright.d308.R;
 import wgu.bright.d308.entities.Excursion;
 
 public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.ExcursionViewHolder> {
+    public interface OnExcursionClickListener {
+        void onExcursionClick(Excursion excursion);
+    }
 
     private List<Excursion> excursionList;
+    private final OnExcursionClickListener listener;
 
+    public ExcursionAdapter(List<Excursion> excursionList, OnExcursionClickListener listener) {
+        this.excursionList = excursionList;
+        this.listener = listener;
+    }
     public ExcursionAdapter(List<Excursion> excursionList) {
         this.excursionList = excursionList;
+        this.listener = null;
     }
+
+
+
 
     @NonNull
     @Override

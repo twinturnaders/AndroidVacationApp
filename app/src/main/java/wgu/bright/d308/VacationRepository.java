@@ -19,6 +19,10 @@ import wgu.bright.d308.entities.Vacation;
 
 public class VacationRepository {
 
+    public VacationDao getVacationDao() {
+        return vacationDao;
+    }
+
     private final VacationDao vacationDao;
     private final excursionDao excursionDao;
     private final Executor executor;

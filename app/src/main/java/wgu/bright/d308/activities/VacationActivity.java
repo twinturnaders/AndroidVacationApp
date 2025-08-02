@@ -1,5 +1,7 @@
 package wgu.bright.d308.activities;
 
+import static java.util.concurrent.Executors.newSingleThreadExecutor;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
@@ -9,6 +11,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -16,15 +20,22 @@ import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import wgu.bright.d308.Views.VacationViews;
+import wgu.bright.d308.adapters.ExcursionAdapter;
 import wgu.bright.d308.alerts.AlertReceiver;
 import wgu.bright.d308.databinding.ActivityMainBinding;
+import wgu.bright.d308.entities.Excursion;
 import wgu.bright.d308.entities.Vacation;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class VacationActivity extends AppCompatActivity {
@@ -33,7 +44,7 @@ public class VacationActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     @SuppressLint("NewApi")
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-
+    private ExcursionAdapter adapter;
 
 
     @SuppressLint("ScheduleExactAlarm")
@@ -45,6 +56,17 @@ public class VacationActivity extends AppCompatActivity {
         //binding logic
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        adapter = new ExcursionAdapter(new ArrayList<>(), excursion -> {
+            Intent intent = new Intent(this, ExcursionActivity.class);
+            intent.putExtra("excursionId", excursion.id);
+
+            intent.putExtra("vacationId", vacationViews.getCurrentVacationId());
+            intent.putExtra("vacationStart", vacationViews.getVacationStartDate().getValue());
+            intent.putExtra("vacationEnd", vacationViews.getVacationEndDate().getValue());
+            startActivity(intent);
+        });
+        binding.recyclerViewExcursions.setAdapter(adapter);
+        binding.recyclerViewExcursions.setLayoutManager(new LinearLayoutManager(this));
 
 
         //get views from class
@@ -63,9 +85,21 @@ public class VacationActivity extends AppCompatActivity {
             }
         });
 
+        //if it new vacation, hide add/edit excursions
+        int currentId = vacationViews.getCurrentVacationId();
+
+
+        if (currentId == 0) {
+            binding.buttonEditExcursions.setVisibility(View.GONE);
+            binding.buttonAddExcursion.setVisibility(View.GONE);
+
+        }
+
+
+
         // Show date pickers on click
-        binding.editTextEndDate.setOnClickListener(v ->
-                showDatePicker(vacationViews.getVacationStartDate(), binding.editTextEndDate));
+        binding.editTextStartDate.setOnClickListener(v ->
+                showDatePicker(vacationViews.getVacationStartDate(), binding.editTextStartDate));
 
         binding.editTextEndDate.setOnClickListener(v ->
                 showDatePicker(vacationViews.getVacationEndDate(), binding.editTextEndDate));
@@ -98,28 +132,28 @@ public class VacationActivity extends AppCompatActivity {
             String end;
 
             if(vacationViews.getVacationTitle()!= null){
-                title = String.valueOf(vacationViews.getVacationTitle());
+                title = String.valueOf(vacationViews.getVacationTitle().getValue());
             }
             else{
                 title = "No name for vacation listed";
 
             }
             if(vacationViews.getVacationHotel()!= null){
-                hotel = String.valueOf(vacationViews.getVacationHotel());
+                hotel = String.valueOf(vacationViews.getVacationHotel().getValue());
             }
             else{
                 hotel = "No hotel listed";
 
             }
             if(vacationViews.getVacationStartDate()!= null){
-                start = String.valueOf(vacationViews.getVacationStartDate());
+                start = String.valueOf(vacationViews.getVacationStartDate().getValue());
             }
             else{
                 start = "No start date listed";
 
             }
             if(vacationViews.getVacationEndDate()!= null){
-                end = String.valueOf(vacationViews.getVacationEndDate());
+                end = String.valueOf(vacationViews.getVacationEndDate().getValue());
             }
             else{
                 end = "No end date listed";
@@ -163,7 +197,7 @@ public class VacationActivity extends AppCompatActivity {
                     if (canDelete) {
                         vacationViews.deleteVacation(vacation);
                         Toast.makeText(this, "Vacation deleted.", Toast.LENGTH_SHORT).show();
-                        finish();
+
                     }
 
                     //excursions attached
@@ -173,9 +207,14 @@ public class VacationActivity extends AppCompatActivity {
                 });
             });
         });
+        binding.buttonAddExcursion.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ExcursionActivity.class);
+            intent.putExtra("vacationId", vacationViews.getCurrentVacationId());
+            startActivity(intent);
+        });
     }
 
-    private void showDatePicker(MutableLiveData<LocalDate> targetLiveData, android.widget.EditText targetEditText) {
+    private void showDatePicker(MutableLiveData<LocalDate> targetLiveData, EditText targetEditText) {
         final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
@@ -219,6 +258,20 @@ public class VacationActivity extends AppCompatActivity {
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
         }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Executor executor = newSingleThreadExecutor();
+        executor.execute(() -> {
+            List<Excursion> excursions = vacationViews.getRepository()
+                    .getExcursionDao().getExcursionsForVacation(vacationViews.getCurrentVacationId());
+
+
+            runOnUiThread(() -> adapter.setExcursions(excursions));
+        });
+    }
         //add back button
 
     }
