@@ -8,12 +8,20 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import wgu.bright.d308.Views.VacationViews;
+import wgu.bright.d308.adapters.ExcursionAdapter;
 import wgu.bright.d308.databinding.VacationDetailActivityBinding;
+import wgu.bright.d308.entities.Excursion;
 import wgu.bright.d308.entities.Vacation;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -81,5 +89,19 @@ public class VacationDetailActivity extends AppCompatActivity {
                 }
             }));
         });
-    }
+
+        //bind to recyclerview
+        RecyclerView recyclerView = binding.recyclerViewExcursions;
+        ExcursionAdapter adapter = new ExcursionAdapter(new ArrayList<>());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // pull and show excursions
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            List<Excursion> excursions = vacationViews.getRepository()
+                    .getExcursionDao().getExcursionsForVacation(vacation.id);
+            runOnUiThread(() -> adapter.setExcursions(excursions));
+    });
+}
 }

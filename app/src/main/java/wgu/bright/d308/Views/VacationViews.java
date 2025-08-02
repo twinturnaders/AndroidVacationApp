@@ -28,6 +28,10 @@ import androidx.lifecycle.MutableLiveData;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class VacationViews extends AndroidViewModel {
 
+    public VacationRepository getRepository() {
+        return repository;
+    }
+
     private final VacationRepository repository;
 
 

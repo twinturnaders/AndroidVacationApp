@@ -57,4 +57,8 @@ public class VacationRepository {
 
 
     }
+
+    public excursionDao getExcursionDao() {
+        return excursionDao;
+    }
 }

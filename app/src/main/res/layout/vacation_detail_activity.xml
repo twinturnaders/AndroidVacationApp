@@ -65,8 +65,8 @@
 
 
         <!-- Excursions -->
-        <TextView
 
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Excursions"
@@ -75,6 +75,13 @@
             android:textColor="@color/material_dynamic_secondary50"
             android:textStyle="bold"
             android:layout_marginTop="18dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewExcursions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:nestedScrollingEnabled="false" />
 
 
         <!-- Start Date -->

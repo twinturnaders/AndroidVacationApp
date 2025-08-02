@@ -10,6 +10,11 @@
           <theme>@style/Theme.D308</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/item_excursion.xml">
+        <config>
+          <theme>@style/Theme.D308</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/vacation_detail_activity.xml">
         <config>
           <theme>@style/Theme.D308</theme>
@@ -21,8 +26,14 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a4ea2d54-0d6b-4837-a513-ecfe999a8b0b" name="Changes" comment="Update on VacationDetail display, decided to make it its own activity vs using main activity">
+    <list default="true" id="a4ea2d54-0d6b-4837-a513-ecfe999a8b0b" name="Changes" comment="B3: F- Share button created on activity_main and detail_activity //">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/adapters/ExcursionAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_excursion.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/VacationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/VacationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/Views/VacationViews.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/Views/VacationViews.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/VacationDetailActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/VacationDetailActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/vacation_detail_activity.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/vacation_detail_activity.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -265,7 +276,15 @@
       <option name="project" value="LOCAL" />
       <updated>1754152056777</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="B3: F- Share button created on activity_main and detail_activity //">
+      <option name="closed" value="true" />
+      <created>1754153378562</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1754153378562</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -277,7 +296,8 @@
     <MESSAGE value="B3: a-d&#10;Vacation Details display/edit&#10;Date validator&#10;Date picker display" />
     <MESSAGE value="B3: E-- Alarm(alertreceiver0 created to signal start of vacation and end of vacation" />
     <MESSAGE value="Update on VacationDetail display, decided to make it its own activity vs using main activity" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update on VacationDetail display, decided to make it its own activity vs using main activity" />
+    <MESSAGE value="B3: F- Share button created on activity_main and detail_activity //" />
+    <option name="LAST_COMMIT_MESSAGE" value="B3: F- Share button created on activity_main and detail_activity //" />
   </component>
   <component name="play_dynamic_filters_status">
     <option name="appIdToCheckInfo">
