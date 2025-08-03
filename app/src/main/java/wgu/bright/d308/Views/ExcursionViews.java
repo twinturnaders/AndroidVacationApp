@@ -1,8 +1,10 @@
 package wgu.bright.d308.Views;
 
 import android.app.Application;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
@@ -18,7 +20,7 @@ public class ExcursionViews extends AndroidViewModel {
     private final VacationRepository repository;
 
     private final MutableLiveData<String> excursionTitle = new MutableLiveData<>();
-    private final MutableLiveData<String> excursionDate = new MutableLiveData<>();
+    private final MutableLiveData<LocalDate> excursionDate = new MutableLiveData<>();
     private long currentExcursionId = 0;
     private long vacationId = 0;
 
@@ -27,11 +29,12 @@ public class ExcursionViews extends AndroidViewModel {
         repository = new VacationRepository(application);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void setEditingExcursion(Excursion excursion) {
         currentExcursionId = excursion.id;
         vacationId = excursion.vacationId;
         excursionTitle.setValue(excursion.title);
-        excursionDate.setValue(excursion.date);
+        excursionDate.setValue(LocalDate.parse(excursion.date));
     }
 
     public MutableLiveData<String> getExcursionTitle() {
@@ -53,7 +56,7 @@ public class ExcursionViews extends AndroidViewModel {
     public void saveExcursion(Consumer<Long> onSaved) {
         Excursion excursion = new Excursion();
         excursion.title = Objects.requireNonNull(excursionTitle.getValue());
-        excursion.date = Objects.requireNonNull(excursionDate.getValue());
+        excursion.date = String.valueOf(Objects.requireNonNull(excursionDate.getValue()));
         excursion.vacationId = vacationId;
 
         if (currentExcursionId == 0) {
@@ -71,7 +74,7 @@ public class ExcursionViews extends AndroidViewModel {
         Excursion excursion = new Excursion();
         excursion.id = currentExcursionId;
         excursion.title = Objects.requireNonNull(excursionTitle.getValue());
-        excursion.date = Objects.requireNonNull(excursionDate.getValue());
+        excursion.date = String.valueOf(Objects.requireNonNull(excursionDate.getValue()));
         excursion.vacationId = vacationId;
         repository.getExcursionDao().delete(excursion);
     }

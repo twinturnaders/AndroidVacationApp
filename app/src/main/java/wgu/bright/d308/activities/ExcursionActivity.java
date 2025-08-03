@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.time.LocalDate;
@@ -30,7 +29,6 @@ public class ExcursionActivity extends AppCompatActivity {
 
     private ExcursionViews excursionViews;
     private ActivityExcursionBinding binding;
-
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
     @Override
@@ -44,12 +42,10 @@ public class ExcursionActivity extends AppCompatActivity {
         long vacationId = getIntent().getLongExtra("vacationId", 0);
         excursionViews.setVacationId(vacationId);
 
-        // Get vacation bounds from intent
+        // Vacation info from intent
         LocalDate vacationStart;
         LocalDate vacationEnd;
-// Show date pickers on click
-        binding.editTextExcursionDate.setOnClickListener(v ->
-                showDatePicker(excursionViews.getExcursionDate(), binding.editTextExcursionDate));
+
         String startSt = getIntent().getStringExtra("vacationStart");
         if (startSt != null) vacationStart = LocalDate.parse(startSt);
         else {
@@ -62,6 +58,12 @@ public class ExcursionActivity extends AppCompatActivity {
             vacationEnd = null;
         }
 
+        //Date picker
+        binding.editTextExcursionDate.setOnClickListener(v ->
+                showDatePicker(binding.editTextExcursionDate)
+        );
+
+        // Save Excursion with date verification and alarm
         binding.buttonSaveExcursion.setOnClickListener(v -> {
             String title = binding.editTextExcursionTitle.getText().toString().trim();
             String rawDate = binding.editTextExcursionDate.getText().toString().trim();
@@ -86,25 +88,25 @@ public class ExcursionActivity extends AppCompatActivity {
             }
 
             excursionViews.getExcursionTitle().setValue(title);
-            excursionViews.getExcursionDate().setValue(LocalDate.parse(rawDate));
+            excursionViews.getExcursionDate().setValue(excursionDate);
 
             excursionViews.saveExcursion(id -> {
                 runOnUiThread(() -> {
                     Toast.makeText(this, "Excursion saved!", Toast.LENGTH_SHORT).show();
-                    scheduleAlert(title, "Excursion starting", excursionDate, 300 + (int)excursionViews.getExcursionId());
+                    scheduleAlert(title, "Excursion starting", excursionDate, Math.toIntExact(300 + id));
                     finish();
                 });
             });
         });
 
+        // Delete Excursion
         binding.buttonDeleteExcursion.setOnClickListener(v -> {
             excursionViews.deleteExcursion();
             Toast.makeText(this, "Excursion deleted.", Toast.LENGTH_SHORT).show();
             finish();
         });
     }
-
-    // ✨ Set alarm for excursion
+    //alarm schedule
     @SuppressLint("ScheduleExactAlarm")
     private void scheduleAlert(String title, String type, LocalDate date, int requestCode) {
         Intent intent = new Intent(this, AlertReceiver.class);
@@ -117,20 +119,19 @@ public class ExcursionActivity extends AppCompatActivity {
         );
 
         long triggerTime = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
-
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
     }
-    private void showDatePicker(MutableLiveData<LocalDate> targetLiveData, EditText targetEditText) {
+
+    private void showDatePicker(EditText targetEditText) {
         final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog dialog = new DatePickerDialog(this, (view, y, m, d) -> {
-            LocalDate selectedDate = null;
-            selectedDate = LocalDate.of(y, m + 1, d);
-            targetLiveData.setValue(selectedDate);
+            LocalDate selectedDate = LocalDate.of(y, m + 1, d);
+            excursionViews.getExcursionDate().setValue(selectedDate);
             targetEditText.setText(selectedDate.format(dateFormatter));
         }, year, month, day);
 
