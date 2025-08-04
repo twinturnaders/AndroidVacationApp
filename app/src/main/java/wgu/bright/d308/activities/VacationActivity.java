@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -29,190 +30,157 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
+import wgu.bright.d308.Views.ExcursionViews;
 import wgu.bright.d308.Views.VacationViews;
 import wgu.bright.d308.adapters.ExcursionAdapter;
 import wgu.bright.d308.alerts.AlertReceiver;
 import wgu.bright.d308.databinding.ActivityMainBinding;
 import wgu.bright.d308.entities.Excursion;
 import wgu.bright.d308.entities.Vacation;
+
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class VacationActivity extends AppCompatActivity {
     private VacationViews vacationViews;
-    //bind to xml file for view
     private ActivityMainBinding binding;
-    @SuppressLint("NewApi")
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     private ExcursionAdapter adapter;
-
+    private long vacationId;
 
     @SuppressLint("ScheduleExactAlarm")
     @RequiresPermission(Manifest.permission.SCHEDULE_EXACT_ALARM)
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //binding logic
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        vacationViews = new ViewModelProvider(this).get(VacationViews.class);
+        ExcursionViews excursionViews = new ViewModelProvider(this).get(ExcursionViews.class);
+
         adapter = new ExcursionAdapter(new ArrayList<>(), excursion -> {
             Intent intent = new Intent(this, ExcursionActivity.class);
             intent.putExtra("excursionId", excursion.id);
-
-            intent.putExtra("vacationId", vacationViews.getCurrentVacationId());
             intent.putExtra("vacationStart", vacationViews.getVacationStartDate().getValue());
             intent.putExtra("vacationEnd", vacationViews.getVacationEndDate().getValue());
+            intent.putExtra("vacationId", vacationViews.getCurrentVacationId());
             startActivity(intent);
         });
         binding.recyclerViewExcursions.setAdapter(adapter);
         binding.recyclerViewExcursions.setLayoutManager(new LinearLayoutManager(this));
 
+        //pull in fields to edit
+        vacationViews.getVacationTitle().observe(this, title ->
+                binding.editTextVacationTitle.setText(title));
 
-        //get views from class
-        vacationViews = new ViewModelProvider(this).get(VacationViews.class);
+        vacationViews.getVacationHotel().observe(this, hotel ->
+                binding.editTextHotel.setText(hotel));
 
-        // Hook up observers to update UI when LiveData changes
-        vacationViews.getVacationStartDate().observe(this, date -> {
-            if (date != null) {
-                binding.editTextStartDate.setText(date.format(dateFormatter));
-            }
-        });
+        vacationViews.getPhoneNumber().observe(this, phone ->
+                binding.editTextPhoneNumber.setText(phone));
 
-        vacationViews.getVacationEndDate().observe(this, date -> {
-            if (date != null) {
-                binding.editTextEndDate.setText(date.format(dateFormatter));
-            }
-        });
-
-        //if it new vacation, hide add/edit excursions
-        int currentId = vacationViews.getCurrentVacationId();
-
-
-        if (currentId == 0) {
-            binding.buttonEditExcursions.setVisibility(View.GONE);
-            binding.buttonAddExcursion.setVisibility(View.GONE);
-
+        vacationId = getIntent().getLongExtra("vacationId", 0L);
+        if (vacationId != 0) {
+            Executor executor = newSingleThreadExecutor();
+            executor.execute(() -> {
+                Vacation vacation = vacationViews.getRepository().getVacationDao().getVacationById(vacationId);
+                if (vacation != null) {
+                    runOnUiThread(() -> vacationViews.setEditingVacation(vacation));
+                }
+            });
         }
 
+        vacationViews.getVacationStartDate().observe(this, date -> {
+            if (date != null) binding.editTextStartDate.setText(date.format(dateFormatter));
+        });
+        vacationViews.getVacationEndDate().observe(this, date -> {
+            if (date != null) binding.editTextEndDate.setText(date.format(dateFormatter));
+        });
 
+        binding.editTextStartDate.setOnClickListener(v -> showDatePicker(vacationViews.getVacationStartDate(), binding.editTextStartDate));
+        binding.editTextEndDate.setOnClickListener(v -> showDatePicker(vacationViews.getVacationEndDate(), binding.editTextEndDate));
 
-        // Show date pickers on click
-        binding.editTextStartDate.setOnClickListener(v ->
-                showDatePicker(vacationViews.getVacationStartDate(), binding.editTextStartDate));
-
-        binding.editTextEndDate.setOnClickListener(v ->
-                showDatePicker(vacationViews.getVacationEndDate(), binding.editTextEndDate));
-
-        // Save vacation
         binding.buttonSaveVacation.setOnClickListener(v -> {
-
             vacationViews.getVacationTitle().setValue(binding.editTextVacationTitle.getText().toString().trim());
             vacationViews.getVacationHotel().setValue(binding.editTextHotel.getText().toString().trim());
-            vacationViews.saveVacation();
-            Toast.makeText(this, "Vacation saved!", Toast.LENGTH_SHORT).show();
+            vacationViews.getPhoneNumber().setValue(binding.editTextPhoneNumber.getText().toString().trim());
 
-            //set alarms for vacation
+            vacationViews.saveVacation(() -> runOnUiThread(() -> {
+                Toast.makeText(this, "Vacation saved!", Toast.LENGTH_SHORT).show();
+                binding.buttonAddExcursion.setVisibility(View.VISIBLE);
+                binding.buttonEditExcursions.setVisibility(View.VISIBLE);
 
-            LocalDate start = vacationViews.getVacationStartDate().getValue();
-            LocalDate end = vacationViews.getVacationEndDate().getValue();
-            String title = vacationViews.getVacationTitle().getValue();
+                LocalDate start = vacationViews.getVacationStartDate().getValue();
+                LocalDate end = vacationViews.getVacationEndDate().getValue();
+                String title = vacationViews.getVacationTitle().getValue();
+                String phoneNumber = vacationViews.getPhoneNumber().getValue();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    if (!alarmManager.canScheduleExactAlarms()) {
+                        Toast.makeText(this, "Exact alarm permission not granted", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
 
-            if (start != null) {
-                scheduleAlert(title, "starting", start, 100 + vacationViews.getCurrentVacationId());
-            }
-            if (end != null) {
-                scheduleAlert(title, "ending", end, 200 + vacationViews.getCurrentVacationId());
-            }
+
+                if (start != null) scheduleAlert(title, "starting", start, 100 + vacationViews.getCurrentVacationId());
+                if (end != null) scheduleAlert(title, "ending", end, 200 + vacationViews.getCurrentVacationId());
+            }));
         });
+
         binding.buttonShareVacation.setOnClickListener(v -> {
-            String title;
-            String hotel;
-            String start;
-            String end;
+            String title = String.valueOf(vacationViews.getVacationTitle().getValue());
+            String hotel = String.valueOf(vacationViews.getVacationHotel().getValue());
+            String start = String.valueOf(vacationViews.getVacationStartDate().getValue());
+            String end = String.valueOf(vacationViews.getVacationEndDate().getValue());
 
-            if(vacationViews.getVacationTitle()!= null){
-                title = String.valueOf(vacationViews.getVacationTitle().getValue());
-            }
-            else{
-                title = "No name for vacation listed";
-
-            }
-            if(vacationViews.getVacationHotel()!= null){
-                hotel = String.valueOf(vacationViews.getVacationHotel().getValue());
-            }
-            else{
-                hotel = "No hotel listed";
-
-            }
-            if(vacationViews.getVacationStartDate()!= null){
-                start = String.valueOf(vacationViews.getVacationStartDate().getValue());
-            }
-            else{
-                start = "No start date listed";
-
-            }
-            if(vacationViews.getVacationEndDate()!= null){
-                end = String.valueOf(vacationViews.getVacationEndDate().getValue());
-            }
-            else{
-                end = "No end date listed";
-
-            }
-
-
-            String message = "Vacation Time!!\n\n"
-                    + "Title: " + title + "\n"
-                    + "Hotel: " + hotel + "\n"
-                    + "Start Date: " + start + "\n"
-                    + "End Date: " + end;
+            String message = "Vacation Time!!\n\nTitle: " + title + "\nHotel: " + hotel + "\nStart Date: " + start + "\nEnd Date: " + end;
 
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT, message);
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Vacation: " + title);
-            shareIntent.putExtra(Intent.EXTRA_TEXT, message);
-
             startActivity(Intent.createChooser(shareIntent, "Share vacation via..."));
         });
+
         binding.buttonViewVacationDetails.setOnClickListener(v -> {
-            int id = vacationViews.getCurrentVacationId();
-            if (id != 0) {
+            long id = vacationViews.getCurrentVacationId();
+            if (id == 0) {
+                Toast.makeText(this, "Please save a vacation first.", Toast.LENGTH_SHORT).show();
+            }
+            else{
                 Intent intent = new Intent(this, VacationDetailActivity.class);
                 intent.putExtra("vacationId", id);
                 startActivity(intent);
-            } else {
-                Toast.makeText(this, "Please save a vacation first.", Toast.LENGTH_SHORT).show();
+
             }
+
         });
 
-        //Delete button click/ check logic
         binding.buttonDeleteVacation.setOnClickListener(v -> {
             Vacation vacation = buildVacationFromFields();
-
-            vacationViews.vacationDeleteCheck(vacation, canDelete -> {
-                runOnUiThread(() -> {
-
-                    //successful delete
-                    if (canDelete) {
-                        vacationViews.deleteVacation(vacation);
-                        Toast.makeText(this, "Vacation deleted.", Toast.LENGTH_SHORT).show();
-
-                    }
-
-                    //excursions attached
-                    else {
-                        Toast.makeText(this, "Can't delete — excursions are attached!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            });
+            vacationViews.vacationDeleteCheck(vacation, canDelete -> runOnUiThread(() -> {
+                if (canDelete) {
+                    vacationViews.deleteVacation(vacation);
+                    Toast.makeText(this, "Vacation deleted.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Can't delete — excursions are attached!", Toast.LENGTH_SHORT).show();
+                }
+            }));
         });
+        binding.buttonHome.setOnClickListener(v -> {
+                    finish();
+
+                });
+
         binding.buttonAddExcursion.setOnClickListener(v -> {
             Intent intent = new Intent(this, ExcursionActivity.class);
             intent.putExtra("vacationId", vacationViews.getCurrentVacationId());
             startActivity(intent);
         });
     }
+//home button
+
 
     private void showDatePicker(MutableLiveData<LocalDate> targetLiveData, EditText targetEditText) {
         final Calendar calendar = Calendar.getInstance();
@@ -221,8 +189,7 @@ public class VacationActivity extends AppCompatActivity {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog dialog = new DatePickerDialog(this, (view, y, m, d) -> {
-            LocalDate selectedDate = null;
-            selectedDate = LocalDate.of(y, m + 1, d);
+            LocalDate selectedDate = LocalDate.of(y, m + 1, d);
             targetLiveData.setValue(selectedDate);
             targetEditText.setText(selectedDate.format(dateFormatter));
         }, year, month, day);
@@ -230,48 +197,43 @@ public class VacationActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    //getting all the forms from the model
-        private Vacation buildVacationFromFields() {
-            Vacation vacation = new Vacation();
-            vacation.id = vacationViews.getCurrentVacationId();
-            vacation.title = binding.editTextVacationTitle.getText().toString().trim();
-            vacation.hotel = binding.editTextHotel.getText().toString().trim();
-            vacation.startDate = binding.editTextStartDate.getText().toString().trim();
-            vacation.endDate = binding.editTextEndDate.getText().toString().trim();
-            return vacation;
-        }
+    private Vacation buildVacationFromFields() {
+        Vacation vacation = new Vacation();
+        vacation.id = vacationViews.getCurrentVacationId();
+        vacation.title = binding.editTextVacationTitle.getText().toString().trim();
+        vacation.hotel = binding.editTextHotel.getText().toString().trim();
+        vacation.startDate = binding.editTextStartDate.getText().toString().trim();
+        vacation.endDate = binding.editTextEndDate.getText().toString().trim();
+        return vacation;
+    }
 
-        //create alarm intent logic
-        @SuppressLint("ScheduleExactAlarm")
-        @RequiresPermission(Manifest.permission.SCHEDULE_EXACT_ALARM)
-        private void scheduleAlert(String title, String type, LocalDate date, int requestCode) {
-            Intent intent = new Intent(this, AlertReceiver.class);
-            intent.putExtra("title", title);
-            intent.putExtra("type", type);
+    @SuppressLint("ScheduleExactAlarm")
+    @RequiresPermission(Manifest.permission.SCHEDULE_EXACT_ALARM)
+    private void scheduleAlert(String title, String type, LocalDate date, long requestCode) {
+        Intent intent = new Intent(this, AlertReceiver.class);
+        intent.putExtra("title", title);
+        intent.putExtra("type", type);
 
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                    this, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
-            );
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this, (int) requestCode, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
 
-            long triggerTime = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        long triggerTime = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
 
-            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
-        }
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         Executor executor = newSingleThreadExecutor();
         executor.execute(() -> {
             List<Excursion> excursions = vacationViews.getRepository()
-                    .getExcursionDao().getExcursionsForVacation(vacationViews.getCurrentVacationId());
-
-
+                    .getExcursionDao().getExcursionsForVacation(vacationId);
+            Log.d("ExcursionLoad", "Loaded " + excursions.size() + " excursions");
             runOnUiThread(() -> adapter.setExcursions(excursions));
         });
     }
-        //add back button
-
-    }
+}

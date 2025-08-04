@@ -22,7 +22,7 @@ public interface VacationDao {
     void delete(Vacation vacation);
 
     @Query("SELECT * FROM vacations WHERE id = :id")
-    Vacation getVacationById(int id);
+    Vacation getVacationById(long id);
 
     @Query("SELECT * FROM vacations WHERE title = :title")
     Vacation getVacationByTitle(String title);
@@ -31,4 +31,6 @@ public interface VacationDao {
     List<Vacation> getAllVacations();
 
 
+   @Query("SELECT * FROM vacations WHERE phone = :phone")
+    List<Vacation> getVacationsByPhone(String phone);
 }

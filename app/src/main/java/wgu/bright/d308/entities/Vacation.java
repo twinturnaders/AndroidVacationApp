@@ -7,13 +7,14 @@ import androidx.room.PrimaryKey;
 public class Vacation {
     @PrimaryKey(autoGenerate = true)
     public long id;
+    public String phone;
     public String title;
     public String hotel;
 
     public String startDate;
     public String endDate;
 
-    Vacation(long id, String title, String hotel, String startDate, String endDate){
+    Vacation(long id, String phone, String title, String hotel, String startDate, String endDate){
         this.id = id;
         this.title = title;
         this.hotel = hotel;

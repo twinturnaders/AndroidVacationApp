@@ -39,12 +39,14 @@ public class ExcursionActivity extends AppCompatActivity {
 
         excursionViews = new ViewModelProvider(this).get(ExcursionViews.class);
 
-        long vacationId = getIntent().getLongExtra("vacationId", 0);
+        long vacationId = getIntent().getLongExtra("vacationId", 0L);
+        excursionViews.setVacationId(vacationId);
         excursionViews.setVacationId(vacationId);
 
         // Vacation info from intent
         LocalDate vacationStart;
         LocalDate vacationEnd;
+
 
         String startSt = getIntent().getStringExtra("vacationStart");
         if (startSt != null) vacationStart = LocalDate.parse(startSt);
@@ -81,14 +83,16 @@ public class ExcursionActivity extends AppCompatActivity {
                 return;
             }
 
+
+
+            excursionViews.getExcursionTitle().setValue(title);
+            excursionViews.getExcursionDate().setValue(excursionDate);
+            excursionViews.setVacationId(excursionViews.getVacationId());
             if (vacationStart != null && vacationEnd != null &&
                     (excursionDate.isBefore(vacationStart) || excursionDate.isAfter(vacationEnd))) {
                 Toast.makeText(this, "Excursion must be within vacation dates.", Toast.LENGTH_SHORT).show();
                 return;
             }
-
-            excursionViews.getExcursionTitle().setValue(title);
-            excursionViews.getExcursionDate().setValue(excursionDate);
 
             excursionViews.saveExcursion(id -> {
                 runOnUiThread(() -> {
@@ -109,6 +113,14 @@ public class ExcursionActivity extends AppCompatActivity {
     //alarm schedule
     @SuppressLint("ScheduleExactAlarm")
     private void scheduleAlert(String title, String type, LocalDate date, int requestCode) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            if (!alarmManager.canScheduleExactAlarms()) {
+                Toast.makeText(this, "Exact alarm permission not granted", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
         Intent intent = new Intent(this, AlertReceiver.class);
         intent.putExtra("title", title);
         intent.putExtra("type", type);

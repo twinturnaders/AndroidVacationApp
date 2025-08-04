@@ -1,28 +1,19 @@
 package wgu.bright.d308.Views;
-import static androidx.core.content.ContextCompat.getSystemService;
-import static java.util.concurrent.Executors.newSingleThreadExecutor;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
+import java.util.Map;
 import java.util.function.Consumer;
 
-import android.Manifest;
-import android.app.AlarmManager;
+import android.annotation.SuppressLint;
 import android.app.Application;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
 import wgu.bright.d308.VacationRepository;
-import wgu.bright.d308.alerts.AlertReceiver;
 import wgu.bright.d308.entities.Vacation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.annotation.RequiresPermission;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -38,6 +29,12 @@ public class VacationViews extends AndroidViewModel {
     private final MutableLiveData<String> vacationTitle = new MutableLiveData<>();
     private final MutableLiveData<String> vacationHotel = new MutableLiveData<>();
 
+    public MutableLiveData<String> getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    private final MutableLiveData<String> phoneNumber = new MutableLiveData<>();
+
     public MutableLiveData<LocalDate> getVacationEndDate() {
         return vacationEndDate;
     }
@@ -50,17 +47,18 @@ public class VacationViews extends AndroidViewModel {
     private final MutableLiveData<LocalDate> vacationStartDate = new MutableLiveData<>();
 
 
-    public int getCurrentVacationId() {
+    public long getCurrentVacationId() {
         return currentVacationId;
     }
 
-    private int currentVacationId = 0;
+    private long currentVacationId = 0;
 
     public VacationViews(@NonNull Application application) {
         super(application);
         repository = new VacationRepository(application);
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     public void setEditingVacation(Vacation vacation) {
         currentVacationId = Math.toIntExact(vacation.id);
         vacationTitle.setValue(vacation.title);
@@ -78,28 +76,36 @@ public class VacationViews extends AndroidViewModel {
     public MutableLiveData<String> getVacationHotel() { return vacationHotel; }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void saveVacation() {
+    public void saveVacation(Runnable onComplete) {
         Vacation vacation = new Vacation();
         vacation.title = vacationTitle.getValue();
+        vacation.phone = phoneNumber.getValue();
         vacation.hotel = vacationHotel.getValue();
+
         LocalDate start = vacationStartDate.getValue();
         LocalDate end = vacationEndDate.getValue();
 
         if (start == null || end == null) return;
+
         if (!end.isAfter(start)) {
             Log.e("Validation", "End date must be after start date");
             return;
         }
 
 
+        vacation.startDate = start.toString(); // Format: 2025-08-03
+        vacation.endDate = end.toString();
+
         if (currentVacationId == 0) {
             repository.insertVacation(vacation, newId -> {
-                currentVacationId = Math.toIntExact(newId);
+                currentVacationId = newId;
                 Log.d("InsertedVacation", "Vacation saved with ID: " + newId);
+                onComplete.run();
             });
         } else {
             vacation.id = currentVacationId;
             repository.updateVacation(vacation);
+            onComplete.run();
         }
     }
 
@@ -123,6 +129,7 @@ public class VacationViews extends AndroidViewModel {
         repository.deleteVacation(vacation);
         currentVacationId = 0;
     }
+
 
 
 }

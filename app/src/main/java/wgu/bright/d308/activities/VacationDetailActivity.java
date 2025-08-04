@@ -38,28 +38,72 @@ public class VacationDetailActivity extends AppCompatActivity {
         binding = VacationDetailActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Initialize ViewModel FIRST
         vacationViews = new ViewModelProvider(this).get(VacationViews.class);
-        int vacationId = getIntent().getIntExtra("vacationId", 0);
 
-        vacation = new Vacation();
-        vacation.id = vacationId;
-        vacation.title = vacationViews.getVacationTitle().getValue();
-        vacation.hotel = vacationViews.getVacationHotel().getValue();
-        vacation.startDate = vacationViews.getVacationStartDate().getValue().toString();
-        vacation.endDate = vacationViews.getVacationEndDate().getValue().toString();
+        long vacationId = getIntent().getLongExtra("vacationId", 0);
 
-        binding.textViewVacationTitle.setText(vacation.title);
-        binding.textViewHotel.setText(vacation.hotel);
-        binding.textViewStartDate.setText(LocalDate.parse(vacation.startDate).format(dateFormatter));
-        binding.textViewEndDate.setText(LocalDate.parse(vacation.endDate).format(dateFormatter));
-
-        binding.buttonEditVacation.setOnClickListener(v -> {
+        if (vacationId == 0) {
+            Toast.makeText(this, "Invalid vacation ID", Toast.LENGTH_SHORT).show();
             finish();
+            return;
+        }
+
+        // RecyclerView setup
+        RecyclerView recyclerView = binding.recyclerViewExcursions;
+        ExcursionAdapter adapter = new ExcursionAdapter(new ArrayList<>());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Load vacation and excursions
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            vacation = vacationViews.getRepository().getVacationDao().getVacationById(vacationId);
+
+            if (vacation == null) {
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "Vacation not found.", Toast.LENGTH_SHORT).show();
+                    finish();
+                });
+                return;
+            }
+
+            List<Excursion> excursions = vacationViews.getRepository()
+                    .getExcursionDao().getExcursionsForVacation(vacationId);
+
+            runOnUiThread(() -> {
+                // Bind vacation data
+                binding.textViewVacationTitle.setText(
+                        vacation.title != null ? vacation.title : "Untitled Vacation"
+                );
+                binding.textViewHotel.setText(
+                        vacation.hotel != null ? vacation.hotel : "No Hotel"
+                );
+
+                try {
+                    LocalDate start = LocalDate.parse(vacation.startDate);
+                    binding.textViewStartDate.setText(start.format(dateFormatter));
+                } catch (Exception e) {
+                    binding.textViewStartDate.setText("N/A");
+                }
+
+                try {
+                    LocalDate end = LocalDate.parse(vacation.endDate);
+                    binding.textViewEndDate.setText(end.format(dateFormatter));
+                } catch (Exception e) {
+                    binding.textViewEndDate.setText("N/A");
+                }
+
+                // Bind excursions
+                adapter.setExcursions(excursions);
+            });
         });
+
+        binding.buttonEditVacation.setOnClickListener(v -> finish());
 
         binding.buttonShareVacation.setOnClickListener(v -> {
             String title = vacation.title != null ? vacation.title : "Untitled Vacation";
-            String hotel = vacation.hotel != null ? vacation.hotel : "No Hotel Listed";
+            String hotel = vacation.hotel != null ? vacation.hotel : "No Hotel";
             String start = vacation.startDate != null ? vacation.startDate : "N/A";
             String end = vacation.endDate != null ? vacation.endDate : "N/A";
 
@@ -73,8 +117,6 @@ public class VacationDetailActivity extends AppCompatActivity {
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT, message);
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Vacation: " + title);
-            shareIntent.putExtra(Intent.EXTRA_TEXT, message);
-
             startActivity(Intent.createChooser(shareIntent, "Share vacation via..."));
         });
 
@@ -89,19 +131,5 @@ public class VacationDetailActivity extends AppCompatActivity {
                 }
             }));
         });
-
-        //bind to recyclerview
-        RecyclerView recyclerView = binding.recyclerViewExcursions;
-        ExcursionAdapter adapter = new ExcursionAdapter(new ArrayList<>());
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // pull and show excursions
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
-            List<Excursion> excursions = vacationViews.getRepository()
-                    .getExcursionDao().getExcursionsForVacation(vacation.id);
-            runOnUiThread(() -> adapter.setExcursions(excursions));
-    });
-}
+    }
 }

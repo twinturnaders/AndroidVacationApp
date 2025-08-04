@@ -26,6 +26,21 @@
             android:layout_height="60dp"
             android:hint="ex: Scranton, PA"
             android:inputType="textCapWords" />
+    <!--Phone-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Phone Number"
+
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editTextPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="4444444444"
+            android:inputType="number"
+            />
 
         <!-- Hotel -->
         <TextView
@@ -96,14 +111,21 @@
            android:id="@+id/buttonAddExcursion"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
+            android:textSize="12sp"
+           android:text="Add\nExcursion" />
+           <Button
+               android:id="@+id/buttonDeleteExcursion"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="12sp"
 
-           android:text="Add Excursion" />
+               android:text="Delete\nExcursion" />
            <Button
                android:id="@+id/buttonEditExcursions"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-               android:text="Edit Excursions" />
+                android:textSize="12sp"
+               android:text="Edit\nExcursions" />
        </LinearLayout>
 
         <Button

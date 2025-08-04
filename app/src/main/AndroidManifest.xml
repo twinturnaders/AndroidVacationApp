@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
 
 
     <application
@@ -23,13 +23,15 @@
         </activity>
 
         <activity android:name=".activities.VacationActivity"
+
             tools:targetApi="26">
 
         </activity>
 
         <activity android:name=".activities.VacationDetailActivity"
             tools:targetApi="26" />
-        <activity android:name=".activities.ExcursionActivity" />
+        <activity android:name=".activities.ExcursionActivity"
+            tools:targetApi="26" />
 
 
 

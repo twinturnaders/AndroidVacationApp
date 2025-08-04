@@ -9,47 +9,89 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:padding="24dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Vacation Manager"
-            android:textSize="24sp"
+            android:textSize="30sp"
             android:textStyle="bold"
-            android:layout_marginBottom="24dp" />
-
-        <!-- Search by ID -->
-        <EditText
-            android:id="@+id/editTextSearchId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Search by Vacation ID"
-            android:inputType="number" />
-
-        <!-- Search by Title -->
-        <EditText
-            android:id="@+id/editTextSearchTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Search by Title"
-            android:inputType="textCapWords"
-            android:layout_marginTop="12dp" />
-
-        <!-- Search Button -->
-        <Button
-            android:id="@+id/buttonSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Search"
-            android:layout_marginTop="16dp" />
-
+            android:layout_marginBottom="18dp" />
         <!-- Create New -->
         <Button
             android:id="@+id/buttonCreateVacation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Create New Vacation"
-            android:layout_marginTop="32dp" />
+            android:textSize="18sp"
+            android:layout_gravity="center"
+             />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Or"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_margin="18dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search for an Existing Vacation"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold"
+             />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter Phone Number"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:layout_marginTop="12dp"
+            android:textStyle="bold"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical">
+
+
+            <!-- Search by ID -->
+            <EditText
+                android:id="@+id/editTextSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:hint=" ex: 4444444444"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:inputType="number"
+                android:layout_marginEnd="12dp"
+                android:layout_marginStart="60dp"/>
+            <!-- Search Button -->
+            <Button
+                android:id="@+id/buttonSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Go" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewVacations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="16dp"/>
+
+
+
+
+
+
+
     </LinearLayout>
 </ScrollView>
