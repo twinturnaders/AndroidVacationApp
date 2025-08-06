@@ -112,39 +112,47 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
             android:textSize="12sp"
+            android:visibility="gone"
            android:text="Add\nExcursion" />
            <Button
                android:id="@+id/buttonDeleteExcursion"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:textSize="12sp"
-
+               android:visibility="gone"
                android:text="Delete\nExcursion" />
            <Button
                android:id="@+id/buttonEditExcursions"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                 android:textSize="12sp"
-               android:text="Edit\nExcursions" />
+               android:visibility="gone"
+               android:text="Edit or View\nExcursion" />
        </LinearLayout>
 
         <Button
             android:id="@+id/buttonSaveVacation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             android:text="Save Vacation" />
         <Button
             android:id="@+id/buttonShareVacation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             android:text="Share Vacation" />
+        <Button
+            android:id="@+id/buttonCreateAlert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Create Alert for Vacation" />
         <Button
             android:id="@+id/buttonViewVacationDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:text="View Details"
             android:textColor="@android:color/black" />
 
@@ -152,7 +160,7 @@
             android:id="@+id/buttonHome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:text="Return Home"
             />
 
@@ -160,7 +168,7 @@
             android:id="@+id/buttonDeleteVacation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:text="Delete Vacation"
             android:textColor="@android:color/holo_red_dark"
             />

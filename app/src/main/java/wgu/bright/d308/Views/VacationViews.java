@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import wgu.bright.d308.VacationRepository;
 import wgu.bright.d308.entities.Vacation;
@@ -60,7 +61,7 @@ public class VacationViews extends AndroidViewModel {
 
     @SuppressLint("ObsoleteSdkInt")
     public void setEditingVacation(Vacation vacation) {
-        currentVacationId = Math.toIntExact(vacation.id);
+        currentVacationId = vacation.id;
         vacationTitle.setValue(vacation.title);
         vacationHotel.setValue(vacation.hotel);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -89,6 +90,7 @@ public class VacationViews extends AndroidViewModel {
 
         if (!end.isAfter(start)) {
             Log.e("Validation", "End date must be after start date");
+            Toast.makeText(this.getApplication(), "End date must be after start date... unless you're travelling through time, then send me a message, we'll talk", Toast.LENGTH_LONG).show();
             return;
         }
 

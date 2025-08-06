@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Set up RecyclerView with adapter
         adapter = new VacationAdapter(new java.util.ArrayList<>(), vacation -> {
-            Intent intent = new Intent(this, VacationActivity.class);
+            Intent intent = new Intent(this, VacationDetailActivity.class);//start from vacationDetail
             intent.putExtra("vacationId", vacation.id);
             startActivity(intent);
         });

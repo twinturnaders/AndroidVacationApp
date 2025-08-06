@@ -133,32 +133,34 @@
             />
 
 
-        <Button
-            android:id="@+id/buttonSaveVacation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Save Vacation" />
+
 
         <Button
             android:id="@+id/buttonEditVacation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="Edit Vacation" />
         <Button
             android:id="@+id/buttonShareVacation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="Share Vacation" />
+
+        <Button
+            android:id="@+id/buttonReturnHome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Return To Home" />
 
 
         <Button
             android:id="@+id/buttonDeleteVacation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
             android:text="Delete Vacation"
             android:textColor="@android:color/holo_red_dark"
              />

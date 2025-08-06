@@ -40,6 +40,7 @@ android {
 
 dependencies {
     implementation("androidx.room:room-runtime:2.7.2")
+    implementation(libs.core.i18n)
 
     annotationProcessor(libs.room.compiler)
 

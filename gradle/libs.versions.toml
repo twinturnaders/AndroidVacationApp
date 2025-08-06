@@ -11,6 +11,7 @@ roomCommonJvm = "2.7.2"
 lifecycleCompiler = "2.9.2"
 roomCompiler = "2.7.2"
 roomRxjava2 = "2.7.2"
+coreI18n = "1.0.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -24,6 +25,7 @@ room-common-jvm = { group = "androidx.room", name = "room-common-jvm", version.r
 lifecycle-compiler = { group = "androidx.lifecycle", name = "lifecycle-compiler", version.ref = "lifecycleCompiler" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 room-rxjava2 = { group = "androidx.room", name = "room-rxjava2", version.ref = "roomRxjava2" }
+core-i18n = { group = "androidx.core", name = "core-i18n", version.ref = "coreI18n" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

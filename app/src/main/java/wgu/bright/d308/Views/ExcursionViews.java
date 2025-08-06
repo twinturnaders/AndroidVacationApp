@@ -27,6 +27,8 @@ public class ExcursionViews extends AndroidViewModel {
 
     private final MutableLiveData<String> excursionTitle = new MutableLiveData<>();
     private final MutableLiveData<LocalDate> excursionDate = new MutableLiveData<>();
+    private Excursion excursion;
+
 
     public long getExcursionId() {
         return ExcursionId;
@@ -58,6 +60,8 @@ public class ExcursionViews extends AndroidViewModel {
     }
 
 
+
+
     public MutableLiveData<String> getExcursionTitle() {
         return excursionTitle;
     }
@@ -87,7 +91,10 @@ public class ExcursionViews extends AndroidViewModel {
                 long newId = repository.getExcursionDao().insert(excursion);
                 currentExcursionId = newId;
                 excursion.id = newId;
-            } else {
+                setExcursionId(newId);
+
+            }
+            else {
                 excursion.id = currentExcursionId;
                 repository.getExcursionDao().update(excursion);
             }
@@ -96,6 +103,11 @@ public class ExcursionViews extends AndroidViewModel {
             new Handler(Looper.getMainLooper()).post(() -> onSaved.accept(currentExcursionId));
         });
     }
+
+
+
+
+
 
     public void deleteExcursion() {
         if (currentExcursionId == 0) return;
@@ -107,9 +119,16 @@ public class ExcursionViews extends AndroidViewModel {
         repository.getExcursionDao().delete(excursion);
     }
 
+    public Excursion getExcursionById(long excursionId){
+        return excursion;
+    }
 
     public void setExcursionId(long excursionId) {
         ExcursionId = excursionId;
+    }
+
+    public VacationRepository getRepository() {
+        return repository;
     }
 }
 

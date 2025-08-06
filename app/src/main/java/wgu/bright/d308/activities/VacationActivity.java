@@ -45,6 +45,8 @@ public class VacationActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     private ExcursionAdapter adapter;
+
+    private Excursion selectedExcursion;
     private long vacationId;
 
     @SuppressLint("ScheduleExactAlarm")
@@ -56,20 +58,7 @@ public class VacationActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         vacationViews = new ViewModelProvider(this).get(VacationViews.class);
-        ExcursionViews excursionViews = new ViewModelProvider(this).get(ExcursionViews.class);
 
-        adapter = new ExcursionAdapter(new ArrayList<>(), excursion -> {
-            Intent intent = new Intent(this, ExcursionActivity.class);
-            intent.putExtra("excursionId", excursion.id);
-            intent.putExtra("vacationStart", vacationViews.getVacationStartDate().getValue());
-            intent.putExtra("vacationEnd", vacationViews.getVacationEndDate().getValue());
-            intent.putExtra("vacationId", vacationViews.getCurrentVacationId());
-            startActivity(intent);
-        });
-        binding.recyclerViewExcursions.setAdapter(adapter);
-        binding.recyclerViewExcursions.setLayoutManager(new LinearLayoutManager(this));
-
-        //pull in fields to edit
         vacationViews.getVacationTitle().observe(this, title ->
                 binding.editTextVacationTitle.setText(title));
 
@@ -86,9 +75,19 @@ public class VacationActivity extends AppCompatActivity {
                 Vacation vacation = vacationViews.getRepository().getVacationDao().getVacationById(vacationId);
                 if (vacation != null) {
                     runOnUiThread(() -> vacationViews.setEditingVacation(vacation));
+                    binding.buttonAddExcursion.setVisibility(View.VISIBLE);
+                    binding.buttonEditExcursions.setVisibility(View.VISIBLE);
+                    binding.buttonDeleteExcursion.setVisibility(View.VISIBLE);
                 }
             });
         }
+
+        adapter = new ExcursionAdapter(new ArrayList<>(), excursion -> {
+            selectedExcursion = excursion;
+
+        });
+        binding.recyclerViewExcursions.setAdapter(adapter);
+        binding.recyclerViewExcursions.setLayoutManager(new LinearLayoutManager(this));
 
         vacationViews.getVacationStartDate().observe(this, date -> {
             if (date != null) binding.editTextStartDate.setText(date.format(dateFormatter));
@@ -101,32 +100,19 @@ public class VacationActivity extends AppCompatActivity {
         binding.editTextEndDate.setOnClickListener(v -> showDatePicker(vacationViews.getVacationEndDate(), binding.editTextEndDate));
 
         binding.buttonSaveVacation.setOnClickListener(v -> {
-            vacationViews.getVacationTitle().setValue(binding.editTextVacationTitle.getText().toString().trim());
-            vacationViews.getVacationHotel().setValue(binding.editTextHotel.getText().toString().trim());
-            vacationViews.getPhoneNumber().setValue(binding.editTextPhoneNumber.getText().toString().trim());
+                    vacationViews.getVacationTitle().setValue(binding.editTextVacationTitle.getText().toString().trim());
+                    vacationViews.getVacationHotel().setValue(binding.editTextHotel.getText().toString().trim());
+                    vacationViews.getPhoneNumber().setValue(binding.editTextPhoneNumber.getText().toString().trim());
 
-            vacationViews.saveVacation(() -> runOnUiThread(() -> {
-                Toast.makeText(this, "Vacation saved!", Toast.LENGTH_SHORT).show();
-                binding.buttonAddExcursion.setVisibility(View.VISIBLE);
-                binding.buttonEditExcursions.setVisibility(View.VISIBLE);
-
-                LocalDate start = vacationViews.getVacationStartDate().getValue();
-                LocalDate end = vacationViews.getVacationEndDate().getValue();
-                String title = vacationViews.getVacationTitle().getValue();
-                String phoneNumber = vacationViews.getPhoneNumber().getValue();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                    if (!alarmManager.canScheduleExactAlarms()) {
-                        Toast.makeText(this, "Exact alarm permission not granted", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
+                    vacationViews.saveVacation(() -> runOnUiThread(() -> {
+                        Toast.makeText(this, "Vacation saved!", Toast.LENGTH_SHORT).show();
+                        binding.buttonAddExcursion.setVisibility(View.VISIBLE);
+                        binding.buttonEditExcursions.setVisibility(View.VISIBLE);
+                        binding.buttonDeleteExcursion.setVisibility(View.VISIBLE);
 
 
-                if (start != null) scheduleAlert(title, "starting", start, 100 + vacationViews.getCurrentVacationId());
-                if (end != null) scheduleAlert(title, "ending", end, 200 + vacationViews.getCurrentVacationId());
-            }));
-        });
+                    }));
+                });
 
         binding.buttonShareVacation.setOnClickListener(v -> {
             String title = String.valueOf(vacationViews.getVacationTitle().getValue());
@@ -147,40 +133,93 @@ public class VacationActivity extends AppCompatActivity {
             long id = vacationViews.getCurrentVacationId();
             if (id == 0) {
                 Toast.makeText(this, "Please save a vacation first.", Toast.LENGTH_SHORT).show();
-            }
-            else{
+            } else {
                 Intent intent = new Intent(this, VacationDetailActivity.class);
                 intent.putExtra("vacationId", id);
                 startActivity(intent);
-
             }
-
         });
 
+        binding.buttonCreateAlert.setOnClickListener(v -> {
+
+            LocalDate start = vacationViews.getVacationStartDate().getValue();
+            LocalDate end = vacationViews.getVacationEndDate().getValue();
+            String title = vacationViews.getVacationTitle().getValue();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                if (!alarmManager.canScheduleExactAlarms()) {
+                    Toast.makeText(this, "Exact alarm permission not granted", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+
+            if (start != null) scheduleAlert(title, "starting", start, 100 + vacationViews.getCurrentVacationId());
+            if (end != null) scheduleAlert(title, "ending", end, 200 + vacationViews.getCurrentVacationId());
+
+        });
         binding.buttonDeleteVacation.setOnClickListener(v -> {
             Vacation vacation = buildVacationFromFields();
             vacationViews.vacationDeleteCheck(vacation, canDelete -> runOnUiThread(() -> {
                 if (canDelete) {
                     vacationViews.deleteVacation(vacation);
+                    binding.editTextPhoneNumber.setText("");
+                    binding.editTextStartDate.setText("");
+                    binding.editTextHotel.setText("");
+                    binding.editTextEndDate.setText("");
+                    binding.buttonAddExcursion.setVisibility(View.GONE);
+                    binding.buttonEditExcursions.setVisibility(View.GONE);
+                    binding.buttonDeleteExcursion.setVisibility(View.GONE);
                     Toast.makeText(this, "Vacation deleted.", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "Can't delete — excursions are attached!", Toast.LENGTH_SHORT).show();
                 }
             }));
         });
-        binding.buttonHome.setOnClickListener(v -> {
-                    finish();
 
-                });
+        binding.buttonHome.setOnClickListener(v -> finish());
 
         binding.buttonAddExcursion.setOnClickListener(v -> {
             Intent intent = new Intent(this, ExcursionActivity.class);
             intent.putExtra("vacationId", vacationViews.getCurrentVacationId());
+            intent.putExtra("vacationStart", vacationViews.getVacationStartDate().getValue().toString());
+            intent.putExtra("vacationEnd", vacationViews.getVacationEndDate().getValue().toString());
             startActivity(intent);
         });
-    }
-//home button
 
+        binding.buttonDeleteExcursion.setOnClickListener(v -> {
+            if (selectedExcursion != null) {
+                Executor executor = newSingleThreadExecutor();
+                executor.execute(() -> {
+                    vacationViews.getRepository().getExcursionDao().delete(selectedExcursion);
+                    runOnUiThread(() -> {
+                        Toast.makeText(this, "Excursion deleted!", Toast.LENGTH_SHORT).show();
+                        selectedExcursion = null;
+                        onResume();
+                    });
+                });
+            } else {
+                Toast.makeText(this, "No excursion selected.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.buttonEditExcursions.setOnClickListener(v -> {
+            if (selectedExcursion != null) {
+                Intent intent = new Intent(this, ExcursionActivity.class);
+
+                intent.putExtra("excursionId", selectedExcursion.id);
+
+//                intent.putExtra("vacationStart", vacationViews.getVacationStartDate().getValue().toString());
+//                intent.putExtra("vacationEnd", vacationViews.getVacationEndDate().getValue().toString());
+                intent.putExtra("vacationId", vacationViews.getCurrentVacationId());
+               intent.putExtra("vacationStart", String.valueOf(vacationViews.getVacationStartDate().getValue()));
+                intent.putExtra("vacationEnd", String.valueOf(vacationViews.getVacationEndDate().getValue()));
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "No excursion selected.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     private void showDatePicker(MutableLiveData<LocalDate> targetLiveData, EditText targetEditText) {
         final Calendar calendar = Calendar.getInstance();

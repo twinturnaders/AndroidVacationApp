@@ -3,6 +3,7 @@ package wgu.bright.d308.activities;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -31,6 +32,7 @@ public class VacationDetailActivity extends AppCompatActivity {
     private VacationViews vacationViews;
     private Vacation vacation;
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+    private ExcursionAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +40,10 @@ public class VacationDetailActivity extends AppCompatActivity {
         binding = VacationDetailActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Initialize ViewModel FIRST
         vacationViews = new ViewModelProvider(this).get(VacationViews.class);
 
         long vacationId = getIntent().getLongExtra("vacationId", 0);
-
+        Log.e("VacationDetail", "VacationId Passed: " + vacationId);
         if (vacationId == 0) {
             Toast.makeText(this, "Invalid vacation ID", Toast.LENGTH_SHORT).show();
             finish();
@@ -51,11 +52,12 @@ public class VacationDetailActivity extends AppCompatActivity {
 
         // RecyclerView setup
         RecyclerView recyclerView = binding.recyclerViewExcursions;
-        ExcursionAdapter adapter = new ExcursionAdapter(new ArrayList<>());
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new ExcursionAdapter(new ArrayList<>(), excursion -> {
+           Excursion selectedExcursion = excursion;
+        });
+        binding.recyclerViewExcursions.setAdapter(adapter);
+        binding.recyclerViewExcursions.setLayoutManager(new LinearLayoutManager(this));
 
-        // Load vacation and excursions
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             vacation = vacationViews.getRepository().getVacationDao().getVacationById(vacationId);
@@ -72,7 +74,6 @@ public class VacationDetailActivity extends AppCompatActivity {
                     .getExcursionDao().getExcursionsForVacation(vacationId);
 
             runOnUiThread(() -> {
-                // Bind vacation data
                 binding.textViewVacationTitle.setText(
                         vacation.title != null ? vacation.title : "Untitled Vacation"
                 );
@@ -94,12 +95,19 @@ public class VacationDetailActivity extends AppCompatActivity {
                     binding.textViewEndDate.setText("N/A");
                 }
 
-                // Bind excursions
                 adapter.setExcursions(excursions);
             });
         });
+        binding.buttonReturnHome.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainActivity.class);//return home
+            startActivity(intent);
+        });
 
-        binding.buttonEditVacation.setOnClickListener(v -> finish());
+        binding.buttonEditVacation.setOnClickListener(v -> {
+            Intent intent = new Intent(this, VacationActivity.class);//pass id to vacationActivity
+            intent.putExtra("vacationId", vacation.id);
+            startActivity(intent);
+        });
 
         binding.buttonShareVacation.setOnClickListener(v -> {
             String title = vacation.title != null ? vacation.title : "Untitled Vacation";
@@ -125,11 +133,21 @@ public class VacationDetailActivity extends AppCompatActivity {
                 if (canDelete) {
                     vacationViews.deleteVacation(vacation);
                     Toast.makeText(this, "Vacation deleted.", Toast.LENGTH_SHORT).show();
-                    finish();
+                    Intent intent = new Intent(this, MainActivity.class);//back to home screen
+                    startActivity(intent);
                 } else {
                     Toast.makeText(this, "Can't delete, excursions are attached!", Toast.LENGTH_SHORT).show();
                 }
             }));
         });
+    }
+    private Vacation buildVacationFromFields() {
+        Vacation vacation = new Vacation();
+        vacation.id = vacationViews.getCurrentVacationId();
+        vacation.title = binding.textViewVacationTitle.getText().toString().trim();
+        vacation.hotel = binding.textViewHotel.getText().toString().trim();
+        vacation.startDate = binding.textViewStartDate.getText().toString().trim();
+        vacation.endDate = binding.textViewEndDate.getText().toString().trim();
+        return vacation;
     }
 }

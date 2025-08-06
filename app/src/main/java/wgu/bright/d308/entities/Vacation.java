@@ -20,6 +20,7 @@ public class Vacation {
         this.hotel = hotel;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.phone = phone;
     }
 
     public Vacation(){
