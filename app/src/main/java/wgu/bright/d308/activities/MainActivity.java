@@ -2,6 +2,7 @@ package wgu.bright.d308.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -32,6 +33,12 @@ public class MainActivity extends AppCompatActivity {
 
         repository = new VacationRepository(getApplication());
 
+        String savedPhone = getIntent().getStringExtra("phoneNumber");
+        Log.e("Phone binding", "Phone passed:" + savedPhone);
+
+        if (savedPhone != null){
+            binding.editTextSearch.setText(savedPhone);
+        }
         // Set up RecyclerView with adapter
         adapter = new VacationAdapter(new java.util.ArrayList<>(), vacation -> {
             Intent intent = new Intent(this, VacationDetailActivity.class);//start from vacationDetail

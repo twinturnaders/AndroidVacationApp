@@ -2,36 +2,44 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/linen"
+    >
 
     <LinearLayout
         android:padding="24dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:text="Excursion Entry"
-            android:textColor="@color/material_dynamic_neutral40"
+            android:text="View/Edit or Create Excursion"
+            android:padding="16dp"
+            style="@style/backgrounds"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
+            />
 <!--Part 4-->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Excursion Title"
+            android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
+
             android:layout_marginTop="16dp"/>
 
         <EditText
             android:id="@+id/editTextExcursionTitle"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="e.g. Snorkeling"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:hint="ex: Beet Collecting"
 
             android:inputType="text" />
 
@@ -39,14 +47,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Excursion Date"
+            android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
+
             android:layout_marginTop="16dp"/>
 
         <EditText
             android:id="@+id/editTextExcursionDate"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
             android:hint="MM/dd/yyyy"
             android:inputType="date" />
 
@@ -55,6 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            style="@style/buttonBackground"
             android:text="Save Excursion" />
 
         <Button
@@ -62,7 +75,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            style="@style/buttonBackground"
             android:text="Create Alert for Excursion" />
+
+
 
         <Button
             android:id="@+id/buttonDeleteExcursion"
@@ -70,6 +86,25 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="Delete Excursion"
-            android:textColor="@android:color/holo_red_dark" />
+            style="@style/buttonBackground"
+            android:textColor="@color/orange_red"/>
+        <Button
+            android:id="@+id/buttonBackToVacation"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            style="@style/navbuttonBackground"
+            android:text="Back To Vacation Edit" />
+
+        <Button
+            android:id="@+id/buttonReturnHome"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/navbuttonBackground"
+
+            android:layout_marginTop="24dp"
+            android:text="Return Home" />
     </LinearLayout>
 </ScrollView>

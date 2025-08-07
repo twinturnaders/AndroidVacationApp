@@ -29,6 +29,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Executor;
 
 import wgu.bright.d308.Views.ExcursionViews;
@@ -67,14 +68,21 @@ public class VacationActivity extends AppCompatActivity {
 
         vacationViews.getPhoneNumber().observe(this, phone ->
                 binding.editTextPhoneNumber.setText(phone));
+        String savedPhone = getIntent().getStringExtra("phoneNumber");
 
+        if (savedPhone != null){
+            binding.editTextPhoneNumber.setText(savedPhone);
+        }
         vacationId = getIntent().getLongExtra("vacationId", 0L);
         if (vacationId != 0) {
             Executor executor = newSingleThreadExecutor();
             executor.execute(() -> {
                 Vacation vacation = vacationViews.getRepository().getVacationDao().getVacationById(vacationId);
                 if (vacation != null) {
-                    runOnUiThread(() -> vacationViews.setEditingVacation(vacation));
+
+                    runOnUiThread(() ->
+                            vacationViews.setEditingVacation(vacation));
+                    binding.editTextPhoneNumber.setText(vacation.phone.toString());
                     binding.buttonAddExcursion.setVisibility(View.VISIBLE);
                     binding.buttonEditExcursions.setVisibility(View.VISIBLE);
                     binding.buttonDeleteExcursion.setVisibility(View.VISIBLE);
@@ -177,7 +185,11 @@ public class VacationActivity extends AppCompatActivity {
             }));
         });
 
-        binding.buttonHome.setOnClickListener(v -> finish());
+        binding.buttonHome.setOnClickListener(v -> {
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra("phoneNumber", savedPhone);
+        startActivity(intent);
+        });
 
         binding.buttonAddExcursion.setOnClickListener(v -> {
             Intent intent = new Intent(this, ExcursionActivity.class);
@@ -240,6 +252,7 @@ public class VacationActivity extends AppCompatActivity {
         Vacation vacation = new Vacation();
         vacation.id = vacationViews.getCurrentVacationId();
         vacation.title = binding.editTextVacationTitle.getText().toString().trim();
+        vacation.phone = binding.editTextPhoneNumber.getText().toString().trim();
         vacation.hotel = binding.editTextHotel.getText().toString().trim();
         vacation.startDate = binding.editTextStartDate.getText().toString().trim();
         vacation.endDate = binding.editTextEndDate.getText().toString().trim();

@@ -19,5 +19,5 @@
         android:layout_height="wrap_content"
         android:text="Excursion Date"
         android:textSize="14sp"
-        android:textColor="@android:color/darker_gray" />
+        android:textColor="@android:color/black" />
 </LinearLayout>

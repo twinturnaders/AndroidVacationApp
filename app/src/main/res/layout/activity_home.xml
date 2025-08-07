@@ -1,30 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:radius="http://schemas.android.com/apk/res-auto"
     android:id="@+id/homeScroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp">
+    android:padding="4dp"
+    android:background="@color/gainsboro"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:padding="24dp">
+        android:gravity="center"
 
+        >
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Vacation Manager"
             android:textSize="30sp"
             android:textStyle="bold"
-            android:layout_marginBottom="18dp" />
+            android:layout_marginBottom="18dp"
+            android:background="@drawable/text_backgrounds"
+            android:textColor="@color/darker_green"
+            android:padding="12dp"
+            android:textAlignment="center"/>
+
+
         <!-- Create New -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/old_lace"
+            android:padding="16dp"
+            android:layout_gravity="center"
+            android:text="Create a New Vacation"
+
+            android:textColor="@color/darker_green"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_margin="12dp"
+
+
+            />
         <Button
             android:id="@+id/buttonCreateVacation"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create New Vacation"
+            android:text="Go"
+            style="@style/buttonBackground"
             android:textSize="18sp"
             android:layout_gravity="center"
              />
@@ -32,13 +58,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Or"
+            android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_margin="18dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/old_lace"
             android:text="Search for an Existing Vacation"
+            android:padding="16dp"
+            android:layout_margin="12dp"
+
+            android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -47,6 +79,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Enter Phone Number"
+
+            android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="18sp"
             android:layout_marginTop="12dp"
@@ -57,6 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:textColor="@color/black"
             android:layout_gravity="center_vertical">
 
 
@@ -65,18 +100,25 @@
                 android:id="@+id/editTextSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
+
+                android:textColorHint="@color/gray"
                 android:hint=" ex: 4444444444"
                 android:textAlignment="center"
                 android:layout_gravity="center"
+                android:textColor="@color/darker_green"
                 android:inputType="number"
                 android:layout_marginEnd="12dp"
                 android:layout_marginStart="60dp"/>
+
             <!-- Search Button -->
             <Button
                 android:id="@+id/buttonSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:backgroundTint="@color/cadet_blue"
+                android:textColor="@color/darker_green"
+
                 android:text="Go" />
         </LinearLayout>
 
@@ -85,7 +127,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            android:textColor="@color/black"/>
 
 
 

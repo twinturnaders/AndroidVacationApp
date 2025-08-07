@@ -5,6 +5,36 @@
       <config />
     </shared>
     <layouts>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/drawable/activity_button.xml">
+        <config>
+          <theme>@style/Theme.D308</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_launcher_background.xml">
+        <config>
+          <theme>@style/Theme.D308</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_launcher_foreground.xml">
+        <config>
+          <theme>@style/Theme.D308</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/drawable/nav_button.xml">
+        <config>
+          <theme>@style/Theme.D308</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/drawable/text_backgrounds.xml">
+        <config>
+          <theme>@style/Theme.D308</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/font/font.xml">
+        <config>
+          <theme>@style/Theme.D308</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_excursion.xml">
         <config>
           <theme>@style/Theme.D308</theme>
@@ -41,22 +71,29 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a4ea2d54-0d6b-4837-a513-ecfe999a8b0b" name="Changes" comment="Part c completed: Overview of part c completed-- working on tweaks for visual appearance and flow-- but working with homescreen w/search/add vacation, vacationactivity, vacationdetail, ExcursionActivity">
+    <list default="true" id="a4ea2d54-0d6b-4837-a513-ecfe999a8b0b" name="Changes" comment="fixes: alert buttons altered, and validation checks improved. All working- need to add back/home button to ExcursionActivity and bind phone number to vacationActivity//">
+      <change afterPath="$PROJECT_DIR$/app/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/img.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/img_1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/img_2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/activity_button.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/nav_button.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/text_backgrounds.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/font/font.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/font/montserrat.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/DAO/excursionDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/DAO/excursionDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/Views/ExcursionViews.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/Views/ExcursionViews.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/Views/VacationViews.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/Views/VacationViews.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/ExcursionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/ExcursionActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/MainActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/VacationActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/VacationActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/VacationDetailActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/VacationDetailActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/adapters/ExcursionAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/adapters/ExcursionAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/entities/Vacation.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/entities/Vacation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_excursion.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_excursion.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_excursion.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_excursion.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/vacation_detail_activity.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/vacation_detail_activity.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,8 +131,16 @@
       <list>
         <option value="Class" />
         <option value="layoutResourceFile" />
+        <option value="valueResourceFile" />
+        <option value="resourceFile" />
       </list>
     </option>
+  </component>
+  <component name="GenerateSignedApkSettings">
+    <option name="KEY_STORE_PATH" value="C:\Users\Administrator\Desktop\keyPath\keyPath" />
+    <option name="KEY_ALIAS" value="VacationSchedKey" />
+    <option name="REMEMBER_PASSWORDS" value="true" />
+    <option name="BUILD_TARGET_KEY" value="apk" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -135,24 +180,37 @@
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Android App.VacationActivity.executor": "Run",
     "Android App.app.executor": "Run",
+    "ApkExportedModule": "d308.app",
+    "ExportApk.ApkPathFord308.app": "C:\\Users\\Administrator\\Documents\\ProjectFolders\\d308-mobile-application-development-android\\app",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "ResourceManagerPrefKey.ResourceType": "DRAWABLE",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ScreenshotViewer.SavePath": "C:/Users/Administrator/Pictures",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "com.google.services.firebase.aqiPopupShown": "true",
     "git-widget-placeholder": "v1",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/Administrator/Documents/ProjectFolders/d308-mobile-application-development-android",
+    "last_opened_file_path": "C:/Users/Administrator/Documents/ProjectFolders/d308-mobile-application-development-android/app/src/main/res/drawable",
+    "run.code.analysis.last.selected.profile": "pProject Default",
     "settings.editor.selected.configurable": "advanced.settings"
+  },
+  "keyToStringList": {
+    "ExportApk.BuildVariants": [
+      "release"
+    ]
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="wgu.bright.d308" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Documents\ProjectFolders\d308-mobile-application-development-android\app\src\main\res\drawable" />
     </key>
   </component>
   <component name="RunManager" selected="Android App.app">
@@ -434,7 +492,15 @@
       <option name="project" value="LOCAL" />
       <updated>1754327206683</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="fixes: alert buttons altered, and validation checks improved. All working- need to add back/home button to ExcursionActivity and bind phone number to vacationActivity//">
+      <option name="closed" value="true" />
+      <created>1754495002633</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1754495002633</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -454,19 +520,20 @@
     <MESSAGE value="Part 5 completed with alarms for excursions, activity_excursion, date validation and formatting (may switch to date picker)" />
     <MESSAGE value="Part 5 tweaks for accuracy-- updated with datepicker, fixed some of the validation logic" />
     <MESSAGE value="Part c completed: Overview of part c completed-- working on tweaks for visual appearance and flow-- but working with homescreen w/search/add vacation, vacationactivity, vacationdetail, ExcursionActivity" />
-    <option name="LAST_COMMIT_MESSAGE" value="Part c completed: Overview of part c completed-- working on tweaks for visual appearance and flow-- but working with homescreen w/search/add vacation, vacationactivity, vacationdetail, ExcursionActivity" />
+    <MESSAGE value="fixes: alert buttons altered, and validation checks improved. All working- need to add back/home button to ExcursionActivity and bind phone number to vacationActivity//" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixes: alert buttons altered, and validation checks improved. All working- need to add back/home button to ExcursionActivity and bind phone number to vacationActivity//" />
   </component>
   <component name="play_dynamic_filters_status">
     <option name="appIdToCheckInfo">
       <map>
         <entry key="wgu.bright.d308">
           <value>
-            <CheckInfo lastCheckTimestamp="1754324214775" />
+            <CheckInfo lastCheckTimestamp="1754586926017" />
           </value>
         </entry>
         <entry key="wgu.bright.d308.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1754324214780" />
+            <CheckInfo lastCheckTimestamp="1754586926031" />
           </value>
         </entry>
       </map>

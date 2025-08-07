@@ -4,42 +4,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/linen">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="12dp"
+        android:textColor="@color/black">
 
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Vacation Title"
-
+            android:textColor="@color/black"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/editTextVacationTitle"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:hint="ex: Scranton, PA"
-            android:inputType="textCapWords" />
+            android:textColorHint="@color/gray"
+            android:inputType="textCapWords"
+            android:textColor="@color/black"/>
     <!--Phone-->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Phone Number"
-
+            android:textColor="@color/black"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/editTextPhoneNumber"
             android:layout_width="match_parent"
+            android:textColorHint="@color/gray"
             android:layout_height="60dp"
             android:hint="4444444444"
             android:inputType="number"
+            android:textColor="@color/black"
             />
 
         <!-- Hotel -->
@@ -48,31 +54,37 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="Hotel / Accommodation"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
 
         <EditText
             android:id="@+id/editTextHotel"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:textColorHint="@color/gray"
+            android:layout_height="50dp"
             android:hint="ex: Dwight Schrutes Bed and Breakfast"
-            android:inputType="textCapWords" />
+            android:inputType="textCapWords"
+            android:textColor="@color/black"/>
 
         <!-- Start Date -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="4dp"
             android:text="Start Date"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
 
         <EditText
             android:id="@+id/editTextStartDate"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:clickable="true"
+            android:textColorHint="@color/gray"
             android:focusable="false"
             android:hint="MM/dd/yyyy"
-            android:inputType="date" />
+            android:inputType="date"
+            android:textColor="@color/black"/>
 
         <!-- End Date -->
         <TextView
@@ -80,29 +92,34 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="End Date"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
 
         <EditText
             android:id="@+id/editTextEndDate"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
+            android:textColorHint="@color/gray"
             android:clickable="true"
             android:focusable="false"
             android:hint="MM/dd/yyyy"
-            android:inputType="date" />
+            android:inputType="date"
+            android:textColor="@color/black"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Excursions"
             android:textStyle="bold"
             android:layout_marginTop="12dp"
+            android:textColor="@color/black"
             />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewExcursions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:nestedScrollingEnabled="false"/>
+            android:nestedScrollingEnabled="false"
+            android:textColor="@color/black"/>
        <LinearLayout
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
@@ -113,6 +130,7 @@
            android:layout_height="wrap_content"
             android:textSize="12sp"
             android:visibility="gone"
+            style="@style/buttonBackground"
            android:text="Add\nExcursion" />
            <Button
                android:id="@+id/buttonDeleteExcursion"
@@ -120,6 +138,8 @@
                android:layout_height="wrap_content"
                android:textSize="12sp"
                android:visibility="gone"
+               style="@style/buttonBackground"
+               android:textColor="@color/orange_red"
                android:text="Delete\nExcursion" />
            <Button
                android:id="@+id/buttonEditExcursions"
@@ -127,6 +147,7 @@
                android:layout_height="wrap_content"
                 android:textSize="12sp"
                android:visibility="gone"
+               style="@style/buttonBackground"
                android:text="Edit or View\nExcursion" />
        </LinearLayout>
 
@@ -134,43 +155,51 @@
             android:id="@+id/buttonSaveVacation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
+            style="@style/buttonBackground"
             android:text="Save Vacation" />
         <Button
             android:id="@+id/buttonShareVacation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
+            style="@style/buttonBackground"
             android:text="Share Vacation" />
         <Button
             android:id="@+id/buttonCreateAlert"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
+            style="@style/buttonBackground"
             android:text="Create Alert for Vacation" />
         <Button
             android:id="@+id/buttonViewVacationDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:text="View Details"
-            android:textColor="@android:color/black" />
-
-        <Button
-            android:id="@+id/buttonHome"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Return Home"
-            />
-
+            style="@style/buttonBackground"
+             />
         <Button
             android:id="@+id/buttonDeleteVacation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/orange_red"
             android:text="Delete Vacation"
-            android:textColor="@android:color/holo_red_dark"
+            style="@style/buttonBackground"
             />
+
+        <Button
+            android:id="@+id/buttonHome"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            style="@style/navbuttonBackground"
+            android:text="Return Home"
+            />
+
+
     </LinearLayout>
 </ScrollView>

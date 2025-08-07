@@ -4,13 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/linen">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="12dp">
 
         <TextView
 
@@ -18,9 +19,10 @@
             android:layout_height="wrap_content"
             android:text="Vacation Details"
             android:textSize="24dp"
+            style="@style/backgrounds"
             android:textAlignment="center"
             android:textStyle="bold"
-            android:layout_marginTop="12dp"/>
+            android:padding="8dp"/>
 
         <!-- View vacation title -->
         <TextView
@@ -29,7 +31,7 @@
             android:text="Vacation Title"
             android:textSize="18sp"
             android:textAlignment="center"
-            android:textColor="@color/material_dynamic_secondary50"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:layout_marginTop="18dp"/>
         <TextView
@@ -38,7 +40,7 @@
             android:textAlignment="center"
             android:textSize="14sp"
             android:layout_height="wrap_content"
-            android:textColor="@color/material_dynamic_neutral40"
+            android:textColor="@color/black"
             android:text=""
             />
 
@@ -51,7 +53,7 @@
             android:text="Hotel Name"
             android:textSize="18sp"
             android:textAlignment="center"
-            android:textColor="@color/material_dynamic_secondary50"
+           android:textColor="@color/black"
             android:textStyle="bold"
             android:layout_marginTop="18dp"/>
         <TextView
@@ -60,7 +62,7 @@
             android:textAlignment="center"
             android:textSize="14sp"
             android:layout_height="wrap_content"
-            android:textColor="@color/material_dynamic_neutral40"
+            android:textColor="@color/black"
             android:text=""
             />
 
@@ -73,7 +75,7 @@
             android:text="Excursions"
             android:textSize="18sp"
             android:textAlignment="center"
-            android:textColor="@color/material_dynamic_secondary50"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:layout_marginTop="18dp"/>
 
@@ -82,6 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:textColor="@color/black"
             android:nestedScrollingEnabled="false" />
 
 
@@ -97,7 +100,7 @@
             android:text="Start Date"
             android:textSize="18sp"
             android:textAlignment="center"
-            android:textColor="@color/material_dynamic_secondary50"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:layout_marginTop="18dp"/>
         <TextView
@@ -106,7 +109,7 @@
             android:textAlignment="center"
             android:textSize="14sp"
             android:layout_height="wrap_content"
-            android:textColor="@color/material_dynamic_neutral40"
+            android:textColor="@color/black"
             android:text=""
             />
 
@@ -119,7 +122,7 @@
             android:text="End Date"
             android:textSize="18sp"
             android:textAlignment="center"
-            android:textColor="@color/material_dynamic_secondary50"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:layout_marginTop="18dp"/>
         <TextView
@@ -128,7 +131,7 @@
             android:textAlignment="center"
             android:textSize="14sp"
             android:layout_height="wrap_content"
-            android:textColor="@color/material_dynamic_neutral40"
+            android:textColor="@color/black"
             android:text=""
             />
 
@@ -140,21 +143,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Edit Vacation" />
+            android:text="Edit Vacation"
+            style="@style/buttonBackground"/>
         <Button
             android:id="@+id/buttonShareVacation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Share Vacation" />
-
-        <Button
-            android:id="@+id/buttonReturnHome"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Return To Home" />
-
+            android:text="Share Vacation"
+            style="@style/buttonBackground"/>
 
         <Button
             android:id="@+id/buttonDeleteVacation"
@@ -162,7 +159,20 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Delete Vacation"
-            android:textColor="@android:color/holo_red_dark"
-             />
+            style="@style/buttonBackground"
+            android:visibility="gone"
+            />
+
+        <Button
+            android:id="@+id/buttonReturnHome"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            style="@style/navbuttonBackground"
+            android:text="Return To Home" />
+
+
+
     </LinearLayout>
 </ScrollView>

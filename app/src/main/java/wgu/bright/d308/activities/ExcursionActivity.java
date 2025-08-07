@@ -89,7 +89,7 @@ public class ExcursionActivity extends AppCompatActivity {
                                 binding.editTextExcursionDate.setText(excursionDate.format(dateFormatter));
                                 originalDate = excursionDate;
                             } catch (Exception e) {
-                                Toast.makeText(this, "Failed to parse excursion date", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "Failed to parse excursion date", Toast.LENGTH_LONG).show();
                                 Log.e("ExcursionActivity", "Bad date: " + excursion.date);
                             }
                         }
@@ -163,7 +163,7 @@ public class ExcursionActivity extends AppCompatActivity {
 
                 int requestCode = (int) (300 + excursionViews.getCurrentExcursionId());
                 scheduleAlert(excursionTitle, "Excursion Day", excursionDate, requestCode);
-                Toast.makeText(this, "Alert set!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Alert set and will remind you on Excursion day!", Toast.LENGTH_SHORT).show();
             });
 
 
@@ -171,8 +171,23 @@ public class ExcursionActivity extends AppCompatActivity {
             excursionViews.deleteExcursion();
             Toast.makeText(this, "Excursion deleted.", Toast.LENGTH_SHORT).show();
             finish();
+
+
+        });
+
+        //back to vacation button
+        binding.buttonBackToVacation.setOnClickListener(v -> {
+            finish();
+        });
+
+        //button return home
+
+        binding.buttonReturnHome.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         });
     }
+
 
     private void showDatePicker(EditText targetEditText) {
         final Calendar calendar = Calendar.getInstance();
@@ -204,4 +219,5 @@ public class ExcursionActivity extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
     }
+
 }

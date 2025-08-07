@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -53,7 +54,7 @@ public class VacationDetailActivity extends AppCompatActivity {
         // RecyclerView setup
         RecyclerView recyclerView = binding.recyclerViewExcursions;
         adapter = new ExcursionAdapter(new ArrayList<>(), excursion -> {
-           Excursion selectedExcursion = excursion;
+            Excursion selectedExcursion = excursion;
         });
         binding.recyclerViewExcursions.setAdapter(adapter);
         binding.recyclerViewExcursions.setLayoutManager(new LinearLayoutManager(this));
@@ -100,12 +101,14 @@ public class VacationDetailActivity extends AppCompatActivity {
         });
         binding.buttonReturnHome.setOnClickListener(v -> {
             Intent intent = new Intent(this, MainActivity.class);//return home
+            intent.putExtra("phoneNumber", vacation.phone.toString());
             startActivity(intent);
         });
 
         binding.buttonEditVacation.setOnClickListener(v -> {
             Intent intent = new Intent(this, VacationActivity.class);//pass id to vacationActivity
             intent.putExtra("vacationId", vacation.id);
+            intent.putExtra("phoneNumber", vacation.phone.toString());
             startActivity(intent);
         });
 
@@ -129,19 +132,22 @@ public class VacationDetailActivity extends AppCompatActivity {
         });
 
         binding.buttonDeleteVacation.setOnClickListener(v -> {
+            Vacation vacation = buildVacationFromFields();
             vacationViews.vacationDeleteCheck(vacation, canDelete -> runOnUiThread(() -> {
                 if (canDelete) {
                     vacationViews.deleteVacation(vacation);
                     Toast.makeText(this, "Vacation deleted.", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(this, MainActivity.class);//back to home screen
-                    startActivity(intent);
+                    finish();
                 } else {
-                    Toast.makeText(this, "Can't delete, excursions are attached!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Can't delete — excursions are attached!", Toast.LENGTH_SHORT).show();
                 }
             }));
         });
+
+
     }
-    private Vacation buildVacationFromFields() {
+
+    Vacation buildVacationFromFields() {
         Vacation vacation = new Vacation();
         vacation.id = vacationViews.getCurrentVacationId();
         vacation.title = binding.textViewVacationTitle.getText().toString().trim();
