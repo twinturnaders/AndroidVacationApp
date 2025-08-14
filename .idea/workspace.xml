@@ -71,14 +71,11 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a4ea2d54-0d6b-4837-a513-ecfe999a8b0b" name="Changes" comment="Signed Apk- release">
-      <change beforePath="$PROJECT_DIR$/.idea/deploymentTargetSelector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deploymentTargetSelector.xml" afterDir="false" />
+    <list default="true" id="a4ea2d54-0d6b-4837-a513-ecfe999a8b0b" name="Changes" comment="updated to include exact alarm permissions request in settings //">
+      <change beforePath="$PROJECT_DIR$/.idea/deviceManager.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deviceManager.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/DAO/VacationDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/DAO/VacationDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/ExcursionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/ExcursionActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/MainActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/VacationActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/VacationActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -509,7 +506,23 @@
       <option name="project" value="LOCAL" />
       <updated>1754832337663</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Updated to include a button with onClickListener to SELECT all from VacationDao//">
+      <option name="closed" value="true" />
+      <created>1755194408714</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1755194408714</updated>
+    </task>
+    <task id="LOCAL-00021" summary="updated to include exact alarm permissions request in settings //">
+      <option name="closed" value="true" />
+      <created>1755194457675</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1755194457675</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -532,7 +545,9 @@
     <MESSAGE value="fixes: alert buttons altered, and validation checks improved. All working- need to add back/home button to ExcursionActivity and bind phone number to vacationActivity//" />
     <MESSAGE value="style alterations and readme file created" />
     <MESSAGE value="Signed Apk- release" />
-    <option name="LAST_COMMIT_MESSAGE" value="Signed Apk- release" />
+    <MESSAGE value="Updated to include a button with onClickListener to SELECT all from VacationDao//" />
+    <MESSAGE value="updated to include exact alarm permissions request in settings //" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated to include exact alarm permissions request in settings //" />
   </component>
   <component name="play_dynamic_filters_status">
     <option name="appIdToCheckInfo">

@@ -6,8 +6,10 @@ import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -143,16 +145,14 @@ public class ExcursionActivity extends AppCompatActivity {
 
         binding.buttonCreateAlert.setOnClickListener(v -> {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                    if (!alarmManager.canScheduleExactAlarms()) {
-                        Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-                        startActivity(intent);
-                        Toast.makeText(this, "Please grant exact alarm permission", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                if (am != null && !am.canScheduleExactAlarms()) {
 
+                    requestExactAlarmPermissionIfNeeded();
+
+                }
+            }
 
 
                 if (excursionTitle.isEmpty() || excursionDate == null) {
@@ -163,7 +163,7 @@ public class ExcursionActivity extends AppCompatActivity {
 
                 int requestCode = (int) (300 + excursionViews.getCurrentExcursionId());
                 scheduleAlert(excursionTitle, "Excursion Day", excursionDate, requestCode);
-                Toast.makeText(this, "Alert set and will remind you on Excursion day!", Toast.LENGTH_SHORT).show();
+
             });
 
 
@@ -205,19 +205,69 @@ public class ExcursionActivity extends AppCompatActivity {
     }
 
     @SuppressLint("ScheduleExactAlarm")
-    private void scheduleAlert(String title, String type, LocalDate date, int requestCode) {
+
+    private void requestExactAlarmPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // API 31+
+            AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            if (am != null && !am.canScheduleExactAlarms()) {
+                Intent i = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                i.setData(Uri.parse("package:" + getPackageName()));
+                startActivity(i);
+                Toast.makeText(this, "Enable \"Allow exact alarms\" to set precise alerts.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+    private void scheduleAlert(String title, String type, LocalDate date, long requestCode) {
+        long triggerTime = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+
         Intent intent = new Intent(this, AlertReceiver.class);
         intent.putExtra("title", title);
         intent.putExtra("type", type);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                this, requestCode, intent,
+        PendingIntent pi = PendingIntent.getBroadcast(
+                this,
+                (int) requestCode,
+                intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
 
-        long triggerTime = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        if (am == null) {
+            Toast.makeText(this, "Alarm service unavailable", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (am.canScheduleExactAlarms()) {
+
+                    am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pi);
+                } else {
+
+                    requestExactAlarmPermissionIfNeeded();
+                    return;
+                }
+            } else {
+
+                am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pi);
+            }
+
+            Toast.makeText(this, "Alert set for " + date, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Alert set and will remind you on Excursion day!", Toast.LENGTH_SHORT).show();
+        } catch (SecurityException se) {
+
+            Intent showIntent = new Intent(this, MainActivity.class);
+            PendingIntent showPi = PendingIntent.getActivity(
+                    this,
+                    (int) requestCode,
+                    showIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+            );
+            AlarmManager.AlarmClockInfo clockInfo = new AlarmManager.AlarmClockInfo(triggerTime, showPi);
+            am.setAlarmClock(clockInfo, pi);
+            Toast.makeText(this, "Scheduled with Alarm Clock", Toast.LENGTH_LONG).show();
+        }
     }
+
 
 }

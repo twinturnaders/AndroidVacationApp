@@ -9,8 +9,10 @@ import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -36,6 +38,7 @@ import wgu.bright.d308.Views.ExcursionViews;
 import wgu.bright.d308.Views.VacationViews;
 import wgu.bright.d308.adapters.ExcursionAdapter;
 import wgu.bright.d308.alerts.AlertReceiver;
+
 import wgu.bright.d308.databinding.ActivityMainBinding;
 import wgu.bright.d308.entities.Excursion;
 import wgu.bright.d308.entities.Vacation;
@@ -155,15 +158,23 @@ public class VacationActivity extends AppCompatActivity {
             String title = vacationViews.getVacationTitle().getValue();
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                if (!alarmManager.canScheduleExactAlarms()) {
-                    Toast.makeText(this, "Exact alarm permission not granted", Toast.LENGTH_SHORT).show();
-                    return;
+                AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                if (am != null && !am.canScheduleExactAlarms()) {
+
+                    requestExactAlarmPermissionIfNeeded();
+
                 }
             }
 
-            if (start != null) scheduleAlert(title, "starting", start, 100 + vacationViews.getCurrentVacationId());
-            if (end != null) scheduleAlert(title, "ending", end, 200 + vacationViews.getCurrentVacationId());
+
+            if (start != null) if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                scheduleAlert(title, "starting", start, 100 + vacationViews.getCurrentVacationId());
+            }
+            if (end != null) if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                scheduleAlert(title, "ending", end, 200 + vacationViews.getCurrentVacationId());
+
+            }
+
 
         });
         binding.buttonDeleteVacation.setOnClickListener(v -> {
@@ -258,24 +269,73 @@ public class VacationActivity extends AppCompatActivity {
         vacation.endDate = binding.editTextEndDate.getText().toString().trim();
         return vacation;
     }
-
+Boolean canSchedule;
     @SuppressLint("ScheduleExactAlarm")
+    private void requestExactAlarmPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // API 31+
+            AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            if (am != null && !am.canScheduleExactAlarms()) {
+                Intent i = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                i.setData(Uri.parse("package:" + getPackageName()));
+                startActivity(i);
+                Toast.makeText(this, "Enable \"Allow exact alarms\" to set precise alerts.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
     @RequiresPermission(Manifest.permission.SCHEDULE_EXACT_ALARM)
     private void scheduleAlert(String title, String type, LocalDate date, long requestCode) {
+        long triggerTime = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+
         Intent intent = new Intent(this, AlertReceiver.class);
         intent.putExtra("title", title);
         intent.putExtra("type", type);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                this, (int) requestCode, intent,
+        PendingIntent pi = PendingIntent.getBroadcast(
+                this,
+                (int) requestCode,
+                intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
 
-        long triggerTime = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        if (am == null) {
+            Toast.makeText(this, "Alarm service unavailable", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (am.canScheduleExactAlarms()) {
+
+                    am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pi);
+                } else {
+
+                    requestExactAlarmPermissionIfNeeded();
+                    return;
+                }
+            } else {
+
+                am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pi);
+            }
+
+            Toast.makeText(this, "Alert set for " + date, Toast.LENGTH_SHORT).show();
+        } catch (SecurityException se) {
+
+            Intent showIntent = new Intent(this, MainActivity.class);
+            PendingIntent showPi = PendingIntent.getActivity(
+                    this,
+                    (int) requestCode,
+                    showIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+            );
+            AlarmManager.AlarmClockInfo clockInfo = new AlarmManager.AlarmClockInfo(triggerTime, showPi);
+            am.setAlarmClock(clockInfo, pi);
+            Toast.makeText(this, "Scheduled with Alarm Clock", Toast.LENGTH_LONG).show();
+        }
     }
+
+
+
 
     @Override
     protected void onResume() {
