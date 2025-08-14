@@ -92,13 +92,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:textColor="@color/black"
-            android:layout_gravity="center">
+            >
 
 
             <!-- Search by ID -->
             <EditText
                 android:id="@+id/editTextSearch"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="60dp"
 
                 android:textColorHint="@color/gray"
@@ -107,7 +107,8 @@
                 android:textColor="@color/darker_green"
                 android:inputType="number"
                 android:layout_marginEnd="12dp"
-                android:layout_marginStart="60dp"/>
+                android:layout_marginStart="30dp"
+                />
 
             <!-- Search Button -->
             <Button
@@ -119,7 +120,23 @@
 
                 android:text="Go" />
         </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Or"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_margin="18dp" />
+        <Button
+            android:id="@+id/buttonViewAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/cadet_blue"
+            android:textColor="@color/darker_green"
+            android:textStyle="bold"
 
+            android:text="View All Vacations" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewVacations"
             android:layout_width="match_parent"

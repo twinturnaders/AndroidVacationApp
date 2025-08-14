@@ -33,4 +33,7 @@ public interface VacationDao {
 
    @Query("SELECT * FROM vacations WHERE phone = :phone")
     List<Vacation> getVacationsByPhone(String phone);
+
+
+
 }

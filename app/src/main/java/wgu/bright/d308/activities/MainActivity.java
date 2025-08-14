@@ -76,5 +76,21 @@ public class MainActivity extends AppCompatActivity {
                 });
             });
         });
+
+        binding.buttonViewAll.setOnClickListener(v -> {
+            executor.execute(()-> {
+                List<Vacation> matches = repository.getVacationDao().getAllVacations();
+                runOnUiThread(() ->{
+                    if (matches != null && !matches.isEmpty()) {
+                        adapter.setVacations(matches);
+                        binding.recyclerViewVacations.setVisibility((View.VISIBLE));
+                    }
+                    else {
+                        Toast.makeText(this, "No vacations found.", Toast.LENGTH_SHORT).show();
+                        binding.recyclerViewVacations.setVisibility(View.GONE);
+                    }
+                });
+            });
+        });
     }
 }
