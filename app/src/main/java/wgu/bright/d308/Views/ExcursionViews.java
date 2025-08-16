@@ -6,6 +6,7 @@ import android.app.Application;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -87,16 +88,23 @@ public class ExcursionViews extends AndroidViewModel {
             excursion.date = String.valueOf(Objects.requireNonNull(excursionDate.getValue()));
             excursion.vacationId = vacationId;
 
-            if (currentExcursionId == 0) {
+            if (currentExcursionId != 0) {
+                excursion.id = currentExcursionId;
+                repository.getExcursionDao().update(excursion);
+                new Handler(Looper.getMainLooper()).post(() ->
+                        Toast.makeText(getApplication(), "Excursion Updated!", Toast.LENGTH_SHORT).show()
+                );
+            }
+            else {
+
+
                 long newId = repository.getExcursionDao().insert(excursion);
                 currentExcursionId = newId;
                 excursion.id = newId;
                 setExcursionId(newId);
-
-            }
-            else {
-                excursion.id = currentExcursionId;
-                repository.getExcursionDao().update(excursion);
+                new Handler(Looper.getMainLooper()).post(() ->
+                        Toast.makeText(getApplication(), "Excursion Saved!", Toast.LENGTH_SHORT).show()
+                );
             }
 
 

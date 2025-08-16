@@ -20,6 +20,40 @@ public class Excursion {
     @PrimaryKey(autoGenerate = true)
     public long id;
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getVacationId() {
+        return vacationId;
+    }
+
+    public void setVacationId(long vacationId) {
+        this.vacationId = vacationId;
+    }
+
+    @NonNull
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(@NonNull String title) {
+        this.title = title;
+    }
+
+    @NonNull
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(@NonNull String date) {
+        this.date = date;
+    }
+
     public long vacationId;
     @NonNull
     public String title;

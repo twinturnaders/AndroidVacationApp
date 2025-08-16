@@ -71,11 +71,11 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a4ea2d54-0d6b-4837-a513-ecfe999a8b0b" name="Changes" comment="updated to include exact alarm permissions request in settings //">
-      <change beforePath="$PROJECT_DIR$/.idea/deviceManager.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deviceManager.xml" afterDir="false" />
+    <list default="true" id="a4ea2d54-0d6b-4837-a513-ecfe999a8b0b" name="Changes" comment="updated apk with current changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/Views/ExcursionViews.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/Views/ExcursionViews.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/ExcursionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/ExcursionActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/VacationActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/activities/VacationActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/entities/Excursion.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/wgu/bright/d308/entities/Excursion.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -522,7 +522,23 @@
       <option name="project" value="LOCAL" />
       <updated>1755194457675</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="updated to include exact alarm permissions request in settings //">
+      <option name="closed" value="true" />
+      <created>1755197553135</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1755197553135</updated>
+    </task>
+    <task id="LOCAL-00023" summary="updated apk with current changes">
+      <option name="closed" value="true" />
+      <created>1755197664052</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1755197664052</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -547,19 +563,20 @@
     <MESSAGE value="Signed Apk- release" />
     <MESSAGE value="Updated to include a button with onClickListener to SELECT all from VacationDao//" />
     <MESSAGE value="updated to include exact alarm permissions request in settings //" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated to include exact alarm permissions request in settings //" />
+    <MESSAGE value="updated apk with current changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated apk with current changes" />
   </component>
   <component name="play_dynamic_filters_status">
     <option name="appIdToCheckInfo">
       <map>
         <entry key="wgu.bright.d308">
           <value>
-            <CheckInfo lastCheckTimestamp="1755183959947" />
+            <CheckInfo lastCheckTimestamp="1755355506977" />
           </value>
         </entry>
         <entry key="wgu.bright.d308.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1755183959947" />
+            <CheckInfo lastCheckTimestamp="1755355506991" />
           </value>
         </entry>
       </map>

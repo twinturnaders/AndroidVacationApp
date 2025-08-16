@@ -1,5 +1,7 @@
 package wgu.bright.d308.activities;
 
+import static java.util.concurrent.Executors.newSingleThreadExecutor;
+
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -22,9 +24,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Objects;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import wgu.bright.d308.Views.ExcursionViews;
 import wgu.bright.d308.alerts.AlertReceiver;
@@ -45,6 +45,8 @@ public class ExcursionActivity extends AppCompatActivity {
     private LocalDate excursionDate;
     private String excursionTitle;
 
+    private Excursion excursion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +55,8 @@ public class ExcursionActivity extends AppCompatActivity {
 
         excursionViews = new ViewModelProvider(this).get(ExcursionViews.class);
 
+
+
         // Load intent extras
         long vacationId = getIntent().getLongExtra("vacationId", 0L);
         long excursionId = getIntent().getLongExtra("excursionId", 0L);
@@ -60,6 +64,7 @@ public class ExcursionActivity extends AppCompatActivity {
         String endDateString = getIntent().getStringExtra("vacationEnd");
 
         excursionViews.setVacationId(vacationId);
+        excursionViews.setExcursionId(excursionId);
 
         // Parse vacation date boundaries
         try {
@@ -73,74 +78,67 @@ public class ExcursionActivity extends AppCompatActivity {
 
 
         // Load excursion if editing
-        if (excursionId > 0L) {
-            Executor executor = Executors.newSingleThreadExecutor();
+        if (excursionId != 0L) {
+            Executor executor = newSingleThreadExecutor();
             executor.execute(() -> {
-                Excursion excursion = AppData.getDatabase(getApplicationContext()).excursionDao().getExcursionById(excursionId);
-                if (excursion != null) {
+                Excursion ex = AppData.getDatabase(getApplicationContext()).excursionDao().getExcursionById(excursionId);
+                if (ex != null) {
                     runOnUiThread(() -> {
-                        excursionTitle = excursion.title;
-                        binding.editTextExcursionTitle.setText(excursionTitle);
+                        excursionViews.setEditingExcursion(ex);
+                        binding.editTextExcursionTitle.setText(ex.title);
+                        LocalDate parsed = LocalDate.parse(ex.date);
+                        binding.editTextExcursionDate.setText(parsed.format(dateFormatter));
+                        excursionTitle = ex.title;
+                        excursionDate = parsed;
                         originalTitle = excursionTitle;
-
-
-                        if (!excursion.date.isEmpty()) {
-                            try {
-                                excursionDate = LocalDate.parse(excursion.date);
-                                excursionViews.getExcursionDate().setValue(excursionDate);
-                                binding.editTextExcursionDate.setText(excursionDate.format(dateFormatter));
-                                originalDate = excursionDate;
-                            } catch (Exception e) {
-                                Toast.makeText(this, "Failed to parse excursion date", Toast.LENGTH_LONG).show();
-                                Log.e("ExcursionActivity", "Bad date: " + excursion.date);
-                            }
-                        }
+                        originalDate = excursionDate;
                     });
-                } else {
-                    runOnUiThread(() -> Toast.makeText(this, "Excursion not found", Toast.LENGTH_SHORT).show());
                 }
             });
         }
 
-        binding.editTextExcursionDate.setOnClickListener(v -> showDatePicker(binding.editTextExcursionDate));
+
+
+
+        binding.editTextExcursionDate.setOnClickListener(v -> {
+            showDatePicker(binding.editTextExcursionDate);
+
+        });
 
         binding.buttonSaveExcursion.setOnClickListener(v -> {
-            excursionTitle = binding.editTextExcursionTitle.getText().toString().trim();
+            String titleInput = binding.editTextExcursionTitle.getText().toString().trim();
             String dateInput = binding.editTextExcursionDate.getText().toString().trim();
 
-
-            if (excursionTitle.isEmpty() || dateInput.isEmpty()) {
+            if (titleInput.isEmpty() || dateInput.isEmpty()) {
                 Toast.makeText(this, "Please fill out all fields.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            LocalDate parsedDate;
             try {
-                excursionDate = LocalDate.parse(dateInput, dateFormatter);
+                parsedDate = LocalDate.parse(dateInput, dateFormatter);
             } catch (Exception e) {
                 Toast.makeText(this, "Invalid date format. Use MM/dd/yyyy", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             if (vacationStart != null && vacationEnd != null) {
-                if (excursionDate.isBefore(vacationStart) || excursionDate.isAfter(vacationEnd)) {
+                if (parsedDate.isBefore(vacationStart) || parsedDate.isAfter(vacationEnd)) {
                     Toast.makeText(this, "Excursion must be within vacation dates.", Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
 
+            excursionTitle = titleInput;
+            excursionDate = parsedDate;
             excursionViews.getExcursionTitle().setValue(excursionTitle);
             excursionViews.getExcursionDate().setValue(excursionDate);
 
-            if(Objects.equals(excursionDate, originalDate) && excursionId != 0 && Objects.equals(excursionTitle, originalTitle)){
-                Toast.makeText(this, "Excursion saved", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            else {
-                excursionViews.saveExcursion(id -> runOnUiThread(() -> {
-                    Toast.makeText(this, "Excursion saved!", Toast.LENGTH_SHORT).show();
+            excursionViews.saveExcursion(id -> runOnUiThread(() -> {
 
-                }));
-            }
+
+            }));
+
         });
 
         binding.buttonCreateAlert.setOnClickListener(v -> {
@@ -155,16 +153,25 @@ public class ExcursionActivity extends AppCompatActivity {
             }
 
 
-                if (excursionTitle.isEmpty() || excursionDate == null) {
-                    Log.e("title check", "title received" + excursionTitle + "and date" + excursionDate);
-                    Toast.makeText(this, "Missing excursion title or date", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+            String titleInput = binding.editTextExcursionTitle.getText().toString().trim();
+            String dateInput = binding.editTextExcursionDate.getText().toString().trim();
+            if (titleInput.isEmpty() || dateInput.isEmpty()) {
+                Log.e("title check", "title received " + titleInput + " and date " + dateInput);
+                Toast.makeText(this, "Missing excursion title or date", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            LocalDate parsedDate;
+            try {
+                parsedDate = LocalDate.parse(dateInput, dateFormatter);
+            } catch (Exception e) {
+                Toast.makeText(this, "Missing excursion title or date", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                int requestCode = (int) (300 + excursionViews.getCurrentExcursionId());
-                scheduleAlert(excursionTitle, "Excursion Day", excursionDate, requestCode);
+            int requestCode = (int) (300 + excursionViews.getCurrentExcursionId());
+            scheduleAlert(titleInput, "Excursion Day", parsedDate, requestCode);
 
-            });
+        });
 
 
         binding.buttonDeleteExcursion.setOnClickListener(v -> {
@@ -199,6 +206,7 @@ public class ExcursionActivity extends AppCompatActivity {
             LocalDate selectedDate = LocalDate.of(y, m + 1, d);
             excursionViews.getExcursionDate().setValue(selectedDate);
             targetEditText.setText(selectedDate.format(dateFormatter));
+            excursionDate = selectedDate;
         }, year, month, day);
 
         dialog.show();
